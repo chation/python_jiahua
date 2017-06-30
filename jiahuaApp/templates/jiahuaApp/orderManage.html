@@ -1,0 +1,94 @@
+<div class="orderManage">
+    <div class="tab_hd">
+        <ul class="table_nav">
+            <li class="active allList" data-index="10"><a href="#all">全部</a><b></b></li>
+            <li class="pendingList" data-index="0"><a href="#pending">待处理</a><b></b></li>
+            <li class="assignedList" data-index="1"><a href="#assigned">已指派</a><b></b></li>
+            <li class="connectedList" data-index="2"><a href="#connected">已接单</a><b></b></li>
+            <li class="loadingList" data-index="3"><a href="#loading">已装货</a><b></b></li>
+            <li class="signList" data-index="4"><a href="#sign">已签收</a><b></b></li>
+            <li class="abnormalList" data-index="5"><a href="#abnormal">异常订单</a><b></b></li>
+        </ul>
+    </div>
+    <div class="time_sort">
+        <label>创建日期</label>
+        <input type="date" class="date" id="getGoods">
+        <a class="btn search" id="getGoodsSearch">查询</a>
+        <a class="btn empty" id="removeSearch">清空</a>
+    </div>
+    <div class="tab_box">
+        <table class="table table-bordered" id="orderTab">
+            <thead style="height: 30px">
+            <tr>
+                <th style="width:50px;padding: 0;text-align: center"><button class="saveall" disabled="true">保存</button></th>
+                <th style="width:60px">车次</th>
+                <th style="width:60px">趟数</th>
+                <th style="width:93px">任务清单数</th>
+                <th style="width:105px">取货日期</th>
+                <th style="width:84px">节点时间</th>
+                <th style="width:138px">发货人</th>
+                <th style="width:138px;">收货人</th>
+                <th style="width:80px;">订单状态</th>
+                <th style="width:106px">纳期</th>
+                <th style="width:84px;">纳时</th>
+                <th style="width:66px;">铁架</th>
+                <th style="width:66px;">胶箱</th>
+                <th class="cc" style="width:187px;">司机车牌</th>
+                <th style="width: 111px;">运作方式</th>
+                <th style="width:70px;">交货地</th>
+                <th style="width: 111px">备注</th>
+                <th style="width: 90px">签收人</th>
+                <th style="width: 70px">操作</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot id="tf">
+            <tr>
+                <td style="width:50px">总计</td>
+                <td style="width:60px"></td>
+                <td style="width:60px"></td>
+                <td style="width:93px"></td>
+                <td style="width:105px"></td>
+                <td style="width:84px"></td>
+                <td style="width:138px"></td>
+                <td style="width:138px;"></td>
+                <td style="width:80px;"></td>
+                <td style="width:106px"></td>
+                <td style="width:84px;"></td>
+                <td style="width:66px;"></td>
+                <td style="width:66px;"></td>
+                <td style="width:187px;"></td>
+                <td style="width:111px;"></td>
+                <th style="width:70px;"></th>
+                <td style="width:111px"></td>
+                <td style="width: 90px"></td>
+                <td style="width:70px"></td>
+                <td></td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="handle">
+        <!--<div class="check">-->
+        <!--<input type="checkbox" id="allSelected"><label for="allSelected">全选</label>-->
+        <!--<span>已选<span id="selectCount">0</span></span>-->
+        <!--</div>-->
+        <div class="design">
+            <a class="btn" id="assign">指派发布</a>
+            <a class="btn" id="ai_assign" disabled="true">智能调度</a>
+        </div>
+{#        <div class="turnPage">#}
+{#            <span></span><span></span>#}
+{#            <span>跳转至</span><input>页#}
+{#            <a>Go</a>#}
+{#            <ul class="pager">#}
+{#                <li><a>上一页</a></li>#}
+{#                <li><a>下一页</a></li>#}
+{#            </ul>#}
+{#            <div>共<span>{{pages}}</span>页</div>#}
+{#        </div>#}
+    </div>
+</div>
+<script src="/static/js/order.js"></script>

@@ -1,0 +1,33 @@
+<div class="upload">
+    <div class="file-hd">
+        <!--<span class="btn-file" id="btn-file">导入文件</span>-->
+        <div class="file-choose">
+            <form action="/json/order/batch/insert/" method="POST" enctype="multipart/form-data" id="formFile">
+                <span class="file-tl">导入文件</span>
+                {% csrf_token %}
+                {{form.as_p}}
+                <input type="date" id="uploadTime" name="createTime">
+                <input type="checkbox" name="full" id="cover">是否覆盖
+                <input type="submit" value="提交" id="submitFile">
+            </form>
+        </div>
+    </div>
+    <div class="tab_box">
+        <table class="table table-bordered orderTab">
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>导入日期</th>
+                <th>导入文件名</th>
+                <th>导入结果</th>
+                <th>导入时间</th>
+                <th>导入订单总数</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="/static/js/jquery-form.js"></script>
+<script src="/static/js/uploadFile.js"></script>

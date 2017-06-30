@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>订单管理</title>
+    <link rel="stylesheet" href="/static/css/weui.css">
+    <style>
+        body{font-size: 14px;font-family: "microsoft yahei", Arial, Helvetica, sans-serif;}
+        a{text-decoration: none}
+        #container>div{display: none}
+        #tabOrder{
+            width: 100%;
+            text-align: center;
+            border-left: 1px solid #ccc;
+            border-top:1px solid #ccc;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        #tabOrder th,#tabOrder td{
+            padding:5px 0;
+            border-right: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
+        }
+        #tabOrder td>button{
+            padding:3px 5px;
+            background: #04be02;
+            border-radius: 3px;
+            color:#fff;
+            outline: none;
+            border:0;
+        }
+        #container>div.show{display: block}
+        .content{
+            width: 90%;
+            margin:1.5em auto;
+            text-align: center;
+        }
+        #overtime .weui-dialog__hd{padding-bottom: 1em}
+        #overtime .button-sp-area{margin-top: 1.0em}
+        #operateBtn{margin: 10px 0;}
+    </style>
+</head>
+<body ontouchstart>
+<div id="container">
+    <div class="show" id="tab">
+        <a class="weui-btn weui-btn_primary" id="operateBtn"></a>
+        <table id="tabOrder" >
+            <thead>
+            <tr>
+                <th style="width: 18%">发货人</th>
+                <th style="width: 18%">收货人</th>
+                <th style="width: 22%">纳期</th>
+                <th style="width: 10%">纳时</th>
+                <th style="width: 10%">铁架</th>
+                <th style="width: 10%">胶箱</th>
+                <th style="width: 12%">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <div id="overtime">
+        <div class="content">
+            <div class="weui-dialog__hd"><strong class="weui-dialog__title overtimeTitle"></strong></div>
+            <div class="weui-dialog__bd overtimeContent"></div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label startTime"></label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="datetime-local" placeholder="" id="startTime"/>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label endTime"></label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="datetime-local" placeholder="" id="endTime"/>
+                </div>
+            </div>
+            <div class="button-sp-area">
+                <a class="weui-btn weui-btn_mini weui-btn_primary" id="newspaper">上报</a>
+            </div>
+        </div>
+    </div>
+    <div id="success">
+        <div class="weui-msg">
+            <div class="weui-msg__icon-area"><i class="weui-icon_msg"></i></div>
+            <div class="weui-msg__text-area">
+                <h2 class="weui-msg__title"></h2>
+                <p class="weui-msg__desc"></p>
+            </div>
+            <div class="weui-msg__opr-area">
+                <p class="weui-btn-area">
+                    <a  class="weui-btn weui-btn_primary" id="confirm">确定</a>
+                   <!-- <a href="javascript:history.back();" class="weui-btn weui-btn_default">取消</a>-->
+                </p>
+            </div>
+            <div class="weui-msg__extra-area">
+                <div class="weui-footer">
+                    <p class="weui-footer__links">
+                        <a href="javascript:void(0);" class="weui-footer__link">底部链接文本</a>
+                    </p>
+                    <p class="weui-footer__text">Copyright &copy; 2008-2016 weui.io</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--确认弹窗-->
+<div id="dialog1" style="display: none">
+    <div class="weui-mask"></div>
+    <div class="weui-dialog">
+        <div class="weui-dialog__hd"><strong class="weui-dialog__title">确认信息</strong></div>
+        <div class="weui-dialog__bd" id="confirmMsg"></div>
+        <div class="weui-dialog__ft">
+            <a class="weui-dialog__btn weui-dialog__btn_default" id="cancel">取消</a>
+            <a class="weui-dialog__btn weui-dialog__btn_primary" id="confirmStatus">确定</a>
+        </div>
+    </div>
+</div>
+<script src="/static/js/jquery-1.11.3.js"></script>
+<script src="/static/js/weui.min.js"></script>
+<script>
+    //页面加载出现的列表
+    var data={{data2|safe}};
+    var tbody= $("#tabOrder tbody");
+    var html="";
+    for(var i=0;i<data.length;i++){
+       html+='<tr data-id="'+data[i].id+'"><td><a href="#overtime" class="pickup">'+data[i].sendName+'</a></td><td><a href="#overtime" class="unloading">'+data[i].receiveName+'</a></td><td>'+data[i].lastDate+'</td><td>'+data[i].lastTime+'</td><td>'+data[i].fe+'</td><td>'+data[i].box+'</td><td><button class="statusMsg" data-id="'+data[i].id+'" data-status="'+data[i].stateType+'"></button></td></tr>';
+    }
+    tbody.html(html);
+    //当订单状态不同时，出现不同的按钮
+    var statusMsg=$(".statusMsg");
+    statusMsg.text("接单");
+    var minType = 5;
+    var btnText="";
+    var id=[];
+    statusMsg.each(function(){
+        var val=$(this).attr("data-status");
+        if(val<minType){
+            minType = val;
+        }
+        if(val==minType){
+            var index=$(this).attr("data-id");
+            id.push(index);
+        }
+        if(val<2){
+            $(this).text("接单");
+        } else if(val==2){
+            $(this).text("装货");
+        }else if(val==3){
+            $(this).text("签收");
+        }else if(val==4){
+            $(this).text("完成");
+            $(this).css("background","#999");
+        }
+    });
+    if(minType<2){
+        btnText="接单";
+    }else if(minType==2){
+        btnText="装货";
+    }else if(minType==3){
+        btnText="签收";
+    }else if(minType==4){
+        btnText="完成";
+        $("#operateBtn").css("background","#999");
+    }
+    $("#operateBtn").text("一键"+btnText);
+    var dialog= $("#dialog1");
+    $("#operateBtn").bind("click",function (e) {
+        e.preventDefault();
+        dialog.css("display","block");
+        $("#confirmMsg").text("是否确认一键"+btnText);
+        if(minType==4){
+            dialog.css("display","none");
+        }
+        $("#confirmStatus").on("click",function () {
+            e.preventDefault();
+            dialog.css("display","none");
+            //获得url上name的值
+            var Request = new Object();
+            Request = GetRequest();
+            var name=Request['name'];
+            console.log(id);
+            console.log(name);
+            $.ajax({
+                type:"post",
+                url:"/wechat/order/state/",
+                data:{orderList:id,name:name},
+                success:function (data) {
+                    window.location.reload();//刷新页面
+                }
+            });
+        });
+        //点击取消
+        cancel();
+    });
+    //当点击按钮时弹出提示窗口
+    tbody.on("click",".statusMsg",function (e) {
+        e.preventDefault();
+        var text=$(this).text();
+        $("#confirmMsg").text("是否确认"+text);
+        var id=$(this).attr("data-id");
+        var stateType=$(this).attr("data-status");
+        if(stateType<2){
+            stateType=2;
+            dialog.css("display","block");
+        }else if(stateType==2){
+            stateType=3;
+            dialog.css("display","block");
+        }else if(stateType==3){
+            stateType=4;
+            dialog.css("display","block");
+        }else if(stateType=4){
+            $(this).css("disabled","disabled");
+        }
+        $("#dialog1").attr({"data-id":id,"data-status":stateType});
+        //当点击确认提交订单状态及Id
+        $("#confirmStatus").unbind("click");
+        $("#confirmStatus").on("click",function () {
+            e.preventDefault();
+            dialog.css("display","none");
+            var id=parseInt(dialog.attr("data-id"));
+            //获得url上name的值
+            var Request = new Object();
+            Request = GetRequest();
+            var name=Request['name'];
+            $.ajax({
+                type:"post",
+                url:"/wechat/order/state/",
+                data:{orderList:[id],name:name},
+                success:function (data) {
+                    window.location.reload();//刷新页面
+                    dialog.attr("data-id",'');
+                    dialog.attr("data-status",'');
+                }
+            });
+        });
+        //点击取消
+        cancel();
+    });
+    //点出发货人或收货人出现弹窗
+    tbody.on("touchstart click","a",function (e) {
+        e.preventDefault();
+        var orderId=$(this).parent().parent().attr("data-id");
+        var text=$(this).text();
+        if($(this).hasClass("pickup")){
+            $(".overtimeTitle").text("取货时间过长反馈");
+            $(".overtimeContent").text("请如实上报时间，最终结果以GPS为准，供应商"+text);
+            $(".startTime").text("取货开始时间");
+            $(".endTime").text("取货结束时间");
+            var uploadType=0;
+        }else if($(this).hasClass("unloading")){
+            $(".overtimeTitle").text("卸货时间过长反馈");
+            $(".overtimeContent").text("请如实上报时间，最终结果以GPS为准，收货方"+text);
+            $(".startTime").text("卸货开始时间");
+            $(".endTime").text("卸货结束时间");
+            var uploadType=1;
+        }
+        $("#overtime").addClass("show").siblings(".show").removeClass("show");
+        //获取当前时间
+        var time = new Date();
+        // 程序计时的月从0开始取值后+1
+        function p(s) {
+            return s < 10 ? '0' + s : s;
+        }
+        var m = time.getMonth() + 1;
+        var d=time.getDate();
+        var t = time.getFullYear() + "-" + p(m) + "-"
+                + p(d) + "T" + time.getHours() + ":"
+                + time.getMinutes();
+        $("#endTime").val(t);
+        $("#startTime").val(t);
+        $("#newspaper").bind("click",function (e) {
+            e.preventDefault();
+            var s=$("#startTime").val();
+            var e=$("#endTime").val();
+            var startTime = (s.slice(0, 10) + " " + s.slice(11, 16) + ":00");
+            var endTime = (e.slice(0, 10) + " " + e.slice(11, 16) + ":00");
+            //判断手机版本
+            var u = navigator.userAgent, app = navigator.appVersion;
+            //var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //android终端或者uc浏览器
+            var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+            if(isiOS){
+                var s=s.replace(/-/g,"/");
+                var e=e.replace(/-/g,"/");
+                var st=(s.slice(0,10)+" "+s.slice(11,16)+":00");
+                var et=(e.slice(0,10)+" "+e.slice(11,16)+":00");
+            }else {
+                var st=startTime;
+                var et=endTime;
+            }
+            var date1=new Date(st);
+            var date2=new Date(et);
+            var lastTime=(date2.getTime()-date1.getTime())/1000/60;
+            $("#confirmMsg").text("等待时间为"+lastTime+"分钟，信息上报后不可修改，请核查上报信息!");
+            if(lastTime<0){
+                $("#success").addClass("show").siblings(".show").removeClass("show");
+                $("#success i").addClass("weui-icon-warn").removeClass("weui-icon-success");
+                $("#success .weui-msg__title").text("操作失败");
+                $("#success .weui-msg__desc").text("结束时间不能小于开始时间");
+                $("#confirm").unbind("click");
+                $("#confirm").bind("click",function () {
+                    $("#overtime").addClass("show").siblings(".show").removeClass("show");
+                })
+            }else{
+                $("#dialog1").css("display","block");
+                $("#confirmStatus").bind("click",function (e) {
+                    e.preventDefault();
+                    $("#dialog1").css("display","none");
+                    $("#success").addClass("show").siblings(".show").removeClass("show");
+                    $.ajax({
+                        type:"post",
+                        url:"/wechat/order/timeout/",
+                        data:{data:[orderId,startTime,endTime,lastTime,uploadType]},
+                        success:function (data) {
+                            $("#success i").addClass("weui-icon-success").removeClass("weui-icon-warn");
+                            $("#success .weui-msg__title").text("操作成功");
+                            $("#success .weui-msg__desc").text("您的时间已成功上报");
+                            $("#confirm").unbind("click");
+                            $("#confirm").bind("click",function () {
+                                $("#tab").addClass("show").siblings(".show").removeClass("show");
+                            });
+                        }
+                    })
+                });
+                cancel();
+            }
+        });
+    });
+    //隐藏dialog1
+    function cancel(){
+        $("#cancel").click(function () {
+            $("#dialog1").css("display","none");
+        })
+    }
+    //获得url上键值
+    function GetRequest() {
+        var url = location.search; //获取url中"?"符后的字串
+        var theRequest = new Object();
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            strs = str.split("&");
+            for(var i = 0; i < strs.length; i ++) {
+                theRequest[strs[i].split("=")[0]]=decodeURI(strs[i].split("=")[1]);
+            }
+        }
+        return theRequest;
+    }
+</script>
+</body>
+</html>

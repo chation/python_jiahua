@@ -1,0 +1,194 @@
+.order{
+    background: #f1f1f3;
+    font-family:"微软雅黑";
+    font-size: 14px;
+    padding-top: 10px;
+    margin: 0 auto;
+    color: #000;
+}
+#orderForm{
+    width: 1060px;
+    height: 750px;
+    margin: auto;
+    overflow: auto;
+}
+#myform{
+    width: 1024px;
+    margin: 0 auto;
+}
+.red-font{
+    color: red;
+    margin: 0 5px;
+}
+input{
+    border-radius: 4px;
+    border:#e4e4e4 solid 1px;
+    padding: 3px;
+    margin-right: 2px;
+    color: #000;
+    background: none;
+}
+input:hover{
+    border: #c1c1c1 solid 1px;
+}
+label{
+    color: #676767;
+    margin-right: 10px;
+    font-weight: normal;
+}
+select{
+    height: 32px;
+    border:#e4e4e4 solid 1px;
+    width: 84px;
+}
+.tl{
+    height: 42px;
+    line-height: 42px;
+    color: #fff;
+    font-size: 16px;
+    background-color: #2e8fea;
+    padding: 0 17px;
+    margin-bottom: 10px;
+}
+/*修改日历样式*/
+input[type=date]::-webkit-inner-spin-button { visibility: hidden; }
+/*修改number箭头*/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button{
+    -webkit-appearance: none !important;
+    margin: 0;
+}
+input[type="number"]{-moz-appearance:textfield;}
+
+.section-head,.section-first,.section-second,.section-third{
+    display: inline-block;
+    width: 100%;
+}
+.section-head,.section,.section-second,.section-third{
+    background: #ffffff;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+.section-head input{
+    background: #fff;
+    margin-right: 20px;
+}
+.section-head>label{
+    margin-left: 10px;
+}
+#catNum,#tranNum,#placeNum{
+    width:60px;
+}
+.section{
+    width: 495px;
+}
+.section-first .left{
+    float: left;
+}
+.section-first .right{
+    float: right;
+}
+.section-first label{
+    display: inline-block;
+    width: 85px;
+}
+.section-first input{
+    width: 300px;
+    margin-top: 5px;
+}
+.section-first .right label{
+    margin-left: 15px;
+}
+.send,.receive{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background: #fff;
+    border: solid 1px #e4e4e4;
+}
+/*姓名电话货物下拉菜单*/
+.inputName,.inputReceiveName,.plateNum{
+    position: relative;
+}
+.nameList,#myform .plateNum>ul{
+    position: absolute;
+    border-radius: 3px;
+    background: #fff;
+    z-index: 1000;
+    max-height: 150px;
+    overflow: auto;
+    display: none;
+}
+.nameList{
+    left:0;
+    top:24px;
+    width:300px;
+}
+#myform .plateNum>ul{
+    left: 80px;
+    top:24px;
+    width:160px;
+    border: solid 1px #e4e4e4;
+}
+.nameList>li,#myform .plateNum>ul>li{
+    height:28px;
+    line-height: 28px;
+    border-bottom: 1px solid #eee;
+    padding-left: 5px;
+}
+.nameList>li:hover,#myform .plateNum>ul>li:hover{
+    background:#ff6600;
+    color: #fff;
+}
+.section-second input{
+    margin-right: 10px;
+}
+.section-second label{
+    margin-left: 10px;
+}
+.section-third .form-group{
+    display: inline-block;
+    margin-right: 20px;
+    margin-bottom: 5px;
+}
+.section-third label{
+    margin-left: 10px;
+}
+#runType{
+    height: 25px;
+}
+/*司机车牌*/
+#myform .plateNum{
+    position: relative;
+}
+.btn-box{
+    text-align: center;
+    letter-spacing: 46px;
+}
+.btn{
+    width: 86px;
+    font-size: 14px;
+    line-height: 15px;
+    letter-spacing: normal;
+}
+.btn-box .save{
+    background: #2f90ea;
+    color: #fff;
+    border: 1px solid #2f90ea;
+}
+.btn-box .save:hover{
+    background: #319af9;
+}
+.btn-box .reset{
+    background: #ffffff;
+    color: #6d6d6d;
+    border: 1px solid #e5e5e5 ;
+}
+.btn-box .reset:hover{
+    border: 1px solid #9a9a9a;
+}
+/*模态框样式*/
+.modal-content{
+    border: none;
+    border-radius:0;
+}

@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=aVe4g3cB4bHQpexct5PfpP8kdRz7IBj3"></script>
+    <title>首页</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/static/css/base.css"/>
+    <link rel="stylesheet" href="/static/css/driver.css">
+    <link rel="stylesheet" href="/static/css/orderCreater.css">
+    <link rel="stylesheet" href="/static/css/uploadFile.css">
+    <link rel="stylesheet" href="/static/css/order.css">
+    <link rel="stylesheet" href="/static/css/clients.css">
+    <link rel="stylesheet" href="/static/css/goods.css">
+</head>
+<body>
+    <div class="top">
+        <div class="pull-right">
+            <a href="accounts/logout/" id="logoff">注销</a>
+            <a id="username">{{ request.user.last_name }}</a>
+            <ul class="userMag">
+                <li><a href="" data-toggle="modal" data-target="#uregister" id="register">用户注册</a></li>
+                <li><a href="" data-toggle="modal" data-target="#upassword" id="revisePwd">修改密码</a></li>
+               <!-- <li><a href="" data-toggle="modal" data-target="#uManage" id="user">用户管理</a></li>-->
+                <li><a href="" data-toggle="modal" data-target=".bs-example-modal-lg" id="user">用户管理</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="aside">
+        <ul class="nav pull-left" id="mytab">
+            <li ><span class="glyphicon glyphicon-home"></span><a href="#main">首页</a></li>
+            <li class="billing">
+                <span class="glyphicon glyphicon-file"></span>
+                <a href="#">开单</a>
+                <ul>
+                    <li><a href="#create">开单</a></li>
+                    <li><a href="#load">批量导入</a></li>
+                </ul>
+            </li>
+            <li><span class="glyphicon glyphicon-list-alt"></span><a href="#order">订单管理</a></li>
+            <li><span class="glyphicon glyphicon-road"></span><a href="#driver">车辆管理</a></li>
+            <li><span class="glyphicon glyphicon-user"></span><a href="#client">客户管理</a></li>
+            <li><span class="glyphicon glyphicon-exclamation-sign"></span><a href="#goodsdelay">取卸超时</a></li>
+            <li><span class="glyphicon glyphicon-time"></span><a href="#history">历史操作</a></li>
+            <li> <span><img src="/static/image/timg.png" style="width: 20px;height:20px;vertical-align: baseline"></span><a href="" onclick="window.open('http://qy.weixin.qq.com/cgi-bin/loginpage')">微信平台</a></li>
+        </ul>
+        <div id="flex_arrow">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+        </div>
+    </div>
+    <div class="tab_content container">
+        <div id="main" class="active text-center">
+            <div id="btnGroup" data-time="">
+                <div class="group1"><div>0</div><span>待处理</span></div>
+                <div class="group2"><div>0</div><span>已指派</span></div>
+                <div class="group3"><div>0</div><span>已接单</span></div>
+                <div class="group4"><div>0</div><span>已装货</span></div>
+                <div class="group5"><div>0</div><span>已签收</span></div>
+            </div>
+            <div id="dateSearch">
+                <a href="" class="yesterday">昨天</a>
+                <a href="" class="today">当天</a>
+                <a href="" class="lastWeek">上周</a>
+                <a href="" class="thisWeek">本周</a>
+                <a href="" class="lastMonth">上月</a>
+                <a href="" class="thisMonth">本月</a>
+                <div>
+                    <label for="startTime">日期</label>
+                    <input type="date" id="startTime">
+                    <label for="endTime">至</label>
+                    <input type="date" id="endTime">
+                </div>
+                <label for="name">司机姓名</label>
+                <input type="text" name="name" id="name" autocomplete="off">
+                <a href="" class="dateSearch">查询</a>
+                <ul>
+                </ul>
+            </div>
+            <div id="lineChart">
+                <canvas id="canvas" width="1050" height="300">您的浏览器不支持此应用，请更新浏览器
+                </canvas>
+            </div>
+        </div>
+        <div id="create"></div>
+        <div id="load"></div>
+        <div id="order"></div>
+        <div id="driver"></div>
+        <div id="client"></div>
+        <div id="goodsdelay"></div>
+        <div id="history"></div>
+    </div>
+    <!--模态框-->
+    <div class="modal modal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body modalSection">
+                    <div class="add"></div>
+                    <div class="form-group">
+                        <button class="confirm">确定</button>
+                        <button class="cancel" data-dismiss="modal">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="uManage">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">用户管理</h4>
+                </div>
+                <div class="modal-body">
+                    <table id="tabUser" class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>姓名</th>
+                            <th>用户名</th>
+                            <th>邮箱</th>
+                            <th>状态</th>
+                            <th>权限</th>
+                            <th>创建日期</th>
+                            <th>最后登录日期</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="positionMsg">
+        <div class="msgContent">
+            <button type="button" class="close" data-dismiss="modal" id="mapClose"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <div id="map"></div>
+        </div>
+    </div>
+    <!--弹出框-->
+    <div id="promptBox" class="alert"></div>
+    <div id="loading" class="loading_gif" style="width: 32px;height: 32px;background: url('/static/image/loading_02.gif');position: absolute;top: 50%;left: 50%;display: none;z-index: 20"></div>
+    <script src="/static/js/jquery-1.11.3.js"></script>
+    <script src="/static/js/bootstrap.js"></script>
+   <script src="/static/js/transformLatitudeLongitude.js"></script>
+    <script src="/static/js/Chart.min.js"></script>
+    <script src="/static/js/index.js"></script>
+    <script src="/static/js/order.js"></script>
+</body>
+</html>

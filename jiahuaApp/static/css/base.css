@@ -1,0 +1,469 @@
+/*公共样式*/
+body{
+    font-family:"microsoft yahei", Arial, Helvetica, sans-serif;
+    margin:0; padding:0;
+    background:#f1f1f3;
+}
+ul,li,p,h1,h2,h3,h4,h5,h6,dl,dt,dd{
+    margin:0;
+    padding:0;
+    border:none;
+    list-style:none;
+}
+input{
+    border:none;
+    outline:none;
+    background:#fff;
+    padding: 0 5px;
+}
+a:hover{
+    text-decoration: none;
+    cursor: pointer;
+}
+/*左侧导航*/
+.aside{
+    width:180px;
+    height: 100%;
+    position: absolute;
+    z-index: 101;
+    background: #0476d9;
+}
+.aside.active{
+    left:-180px;
+}
+#mytab{
+    margin-top:80px;
+}
+#mytab>li>a{
+    display:block;
+    width:180px;
+    height:60px;
+    line-height: 40px;
+    font-size: 16px;
+    color:#fff;
+    margin-bottom: 2px;
+    background:#0489EB;
+    padding-left:75px;
+}
+#mytab>li>span{
+    position: absolute;
+    left:40px;
+    top:22px;
+    font-size: 16px;
+    color:#fff;
+    z-index:100;
+}
+#mytab>li>a:hover{
+    background: #199AFF;
+}
+#flex_arrow{
+    width:11px;
+    height: 50px;
+    line-height: 48px;
+    border: 1px solid #7bbfea;
+    border-left: 0;
+    position: absolute;
+    left:180px;
+    top:38%;
+    font-size: 8px;
+    color:#999;
+}
+#flex_arrow:hover{
+    color:#666;
+    border: 1px solid #199AFF;
+    border-left: 0;
+}
+/*开单*/
+.billing{
+    position: relative;
+}
+.billing>ul{
+    position: absolute;
+    left:180px;
+    top:0;
+    display: none;
+    background: rgba(255,255,255,0.9);
+}
+#mytab>li:hover>ul{
+    display: block;
+}
+.billing>ul>li>a{
+    display: block;
+    width:110px;
+    height:40px;
+    line-height:40px;
+    padding-left: 10px;
+    border-bottom: 1px solid #eee;
+    border-right: 1px solid #eee;
+    color:#308bd4;
+    font-size: 14px;
+}
+.billing>ul>li>a:first-child{
+    border-top:  1px solid #eee;
+}
+.top{
+    position: absolute;
+    width:100%;
+    height:50px;
+    background: #0476d9;
+    z-index: 100;
+}
+/*右侧内容样式*/
+.tab_content{
+    position: absolute;
+    padding: 50px 10px 20px 190px;
+    z-index: 10;
+}
+.tab_content.active{
+    padding-left: 10px;
+}
+.container{width: 100%;}
+.tab_content>div{
+    display: none;
+}
+.tab_content>div.active{
+    display: block;
+}
+/*表格样式*/
+.table{
+    margin-bottom: 50px;
+}
+.table-bordered{border: none}
+.tab_box{
+    position: relative;
+    width: 100%;
+    margin: 10px 0;
+    border: 1px solid #e5e5e5;
+    background-color: #f1f1f3;
+    overflow: auto;
+}
+.tab_box>table>thead{
+    background: #f1f1f3;
+    vertical-align: baseline;
+}
+.tab_box>table>tbody td{
+    padding: 0 8px;
+    height: 25px;
+    line-height: 25px;
+    vertical-align: baseline;
+}
+.tab_box>table>tbody tr:nth-child(2n-1){
+    background: #fff;
+}
+.tab_box>table>tbody tr:hover{
+    background: #fffde3;
+}
+/*模态框*/
+.modal>.modal-dialog{
+    width:350px;
+    margin:150px auto 0;
+}
+.modal-header{
+    background: #2e8fea;
+    padding:10px 15px;
+    color:#fff;
+}
+.modalSection button{
+    width:80px;
+    height:30px;
+    border:1px solid #eee;
+    border-radius: 4px;
+    outline: none;
+    margin:10px 0;
+}
+.modalSection label{
+    font-size: 14px;
+    color:#666;
+    display: inline-block;
+    width:70px;
+    text-align: right;
+    margin-right: 15px;
+}
+.modalSection input{
+    border:1px solid #eee;
+    width:180px;
+    height:30px;
+    border-radius: 5px;
+}
+.modal-body .confirm{
+    background:#2e8fea;
+    color:#fff;
+    margin:0 20px 0 80px;
+}
+.modal-body .confirm:hover{
+    background: #3198f8;
+}
+.modal-body .cancel{
+    background: #fff;
+    color:#666;
+    border:1px solid #eee;
+}
+.modal-body .cancel:hover{
+    border: 1px solid #ccc;
+}
+.modal-body p{
+    margin:20px 0;
+    font-size: 14px;
+    text-align: center;
+}
+/*提示框*/
+#promptBox{
+    position: absolute;
+    top:50%;
+    left:50%;
+    z-index: 100;
+    font-size: 14px;
+    background: #4cae4c;
+    color:#fff;
+    display: none;
+}
+/*警告框*/
+#promptBox.warning{
+    background: #f00;
+}
+#promptBox.active{
+    display: block;
+}
+/*操作内容*/
+.operate{
+    position: relative;
+    box-sizing: border-box;
+}
+.operate>a{
+    display: inline-block;
+    width:50px;
+    height:26px;
+    margin-top: 2px;
+    text-align: center;
+    border: 1px solid transparent;
+    border-bottom: 0;
+}
+.operate>span{
+    position: absolute;
+    display: inline-block;
+    left:1px;
+    top:23px;
+    width:48px;
+    height:1px;
+    background: transparent;
+    z-index: 20;
+}
+.operate>ul{
+    position: absolute;
+    left:0;
+    top:26px;
+    width:100px;
+    border: 1px solid #eee;
+    background:#fff;
+    z-index:1000;
+    display: none;
+}
+.operate>ul a{
+    padding-left: 6px;
+}
+.operate>ul>li:hover>a{
+    display: block;
+    width: 100px;
+    height:25px;
+    background: #3a97ea;
+    color:#fff;
+}
+.operate:hover>ul,.operate:hover>span{
+    display: block;
+}
+.operate:hover>span{
+    background: #fff;
+}
+.operate:hover>a{
+    border: 1px solid #eee;
+    border-bottom: 0;
+    background-color: #fff;
+    z-index: 10;
+}
+/*首页内容样式*/
+#main{
+    overflow:auto;
+    max-width: 1060px;
+    margin: auto;
+}
+#btnGroup{
+    width:950px;
+    height:68px;
+    margin:20px auto;
+}
+#btnGroup>div{
+    float:left;
+    width: 144px;
+    height: 66px;
+    font-size: 16px;
+    color:#fff;
+    border-radius: 10px;
+    margin:0 20px;
+    display: none;
+}
+#btnGroup>div>div{
+    padding:10px 0 5px;
+}
+#btnGroup>.group1{
+    background: #ff6c6c;
+}
+#btnGroup>.group2{
+    background: #feae47;
+}
+#btnGroup>.group3{
+    background: #6cc664;
+}
+#btnGroup>.group4{
+    background: #57aeff;
+}
+#btnGroup>.group5{
+    background: #feae47;
+}
+/*日期搜索*/
+#dateSearch{
+    height: 50px;
+    background: #fff;
+    margin: auto;
+    border-radius: 5px;
+    box-shadow: 0 2px 16px #ccc, 0 0 1px #ccc, 0 0 1px #ccc;
+    position: relative;
+    width: 1050px;
+}
+#dateSearch>a{
+    display: inline-block;
+    width: 52px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    color:#666;
+    margin-left: 10px;
+}
+#dateSearch>a.active{
+    background-color: #2e8fea;
+    color:#fff;
+}
+#dateSearch>div{
+    display: inline-block;
+    margin:0 10px 0 10px;
+}
+#dateSearch>div>label{
+    color:#666;
+}
+#dateSearch>div>input{
+    width:130px;
+    height: 30px;
+}
+#dateSearch>.dateSearch{
+    border:0;
+    color:#fff;
+    background: #2e8fea;
+}
+#startTime,#endTime{
+    display:inline-block;
+    margin-top:12px;
+}
+#dateSearch>ul{
+    position: absolute;
+    left:861px;
+    top:39px;
+    width:90px;
+    border: solid 1px #e4e4e4;
+    border-radius: 3px;
+    background: #fff;
+    z-index: 1000;
+    text-align: left;
+    max-height:150px ;
+    overflow: auto;
+    display:none;
+}
+#dateSearch>ul li{
+    height:28px;
+    width: 88px;
+    line-height: 28px;
+    padding-left: 5px;
+    border-bottom: 1px solid #eee;
+}
+#dateSearch>ul li:hover{
+    background:#ff6600;
+    color: #fff;
+}
+/*司机姓名*/
+#dateSearch #name{width: 90px;}
+/*画布*/
+#lineChart{
+    width:1050px;
+    height:350px;
+    margin: auto;
+    position: relative;
+}
+#canvas{
+    background: #fff;
+    margin-top: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 16px #ccc, 0 0 1px #ccc, 0 0 1px #ccc;
+    position: absolute;
+    left:0;
+    top:0;
+}
+/*注销按钮*/
+#logoff{
+    float:right;
+    width: 50px;
+    height: 25px;
+    line-height: 25px;
+    text-align: center;
+    margin-top: 12px;
+    margin-right: 20px;
+    color:#fff;
+    font-size: 14px;
+    background-color:#2e8fea;
+    border-radius: 3px;
+}
+#username{
+    float:right;
+    width: 80px;
+    text-align: center;
+    margin-top: 15px;
+    margin-right: 15px;
+    color:#fff;
+}
+.top>div{position: relative}
+.top .userMag{
+    position: absolute;
+    width: 80px;
+    padding: 5px 0;
+    left:2px;
+    top:50px;
+    background-color: #fff;
+    border-radius: 3px;
+    z-index: 100;
+    display: none;
+
+}
+.userMag>li{
+    line-height: 25px;
+    text-align: center;
+}
+/*用户管理的模态框*/
+#uManage .modal-content{
+    width: 800px;
+}
+#tabUser{
+    width: 770px;
+    border-top:1px solid #ddd;
+}
+/*用户管理的删除按钮*/
+.userDel,.isActive{
+    display: inline-block;
+    width: 47px;
+    height: 25px;
+    text-align: center;
+    line-height: 25px;
+    border-radius: 3px;
+    color: #fff;
+    background: #2e8fea;
+}
+.isActive{margin-right: 3px;}
+.userDel:hover,.isActive:hover{color:#fff;}

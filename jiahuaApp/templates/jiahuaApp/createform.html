@@ -1,0 +1,99 @@
+<div class="order">
+    <div id="orderForm">
+        <form name="myform" id="myform">
+        <div class="section-head">
+            <h4 class="tl">取货信息</h4>
+            <label for="catNum">车次</label><input type="number" id="catNum" name="catNum">
+            <label for="tranNum">趟数</label><input type="number" id="tranNum" name="tranNum">
+            <label for="placeNum">任务清单数</label><input type="number" id="placeNum" name="placeNum">
+            <label for="getGoodsDate">取货日期</label><input type="date" class="date" id="getGoodsDate" name="getGoodsDate">
+            <label for="getGoodsTime">节点时间</label><input type="text" id="getGoodsTime" name="getGoodsTime">
+        </div>
+        <div class="section-first">
+            <!--发货方-->
+            <div class="section left" id="sender">
+                <h4 class="tl">发货方</h4>
+                <label for="sendName"><span class="red-font">*</span>姓名</label>
+                <!--下拉框-->
+                <span class="inputName">
+                    <input type="text" id="sendName" name="sendName" autocomplete="off" class="name" maxlength="20">
+                    <ul class="nameList send">
+                    </ul>
+                </span>
+                <label for="sendPhoneNumber"><span class="red-font">*</span>电话</label>
+                <!--下拉框-->
+                <span class="inputPhoneNum">
+                    <input type="text" id="sendPhoneNumber" name="sendPhoneNumber" autocomplete="off" class="telnum" >
+                </span>
+                <label for="sendAddress"><span class="red-font">*</span>地址</label>
+                <!--下拉框-->
+                <span class="inputAddress">
+                    <input type="text" id="sendAddress" autocomplete="off" maxlength="20" name="sendAddress">
+                </span>
+                <label for="sendCode">出货地编码</label>
+                <!--下拉框-->
+                <span class="inputCode">
+                    <input type="text" id="sendCode" name="sendCode">
+                </span>
+            </div>
+            <!--收货方-->
+            <div class="section right" id="receiver">
+                <div>
+                    <h4 class="tl">收货方</h4>
+                    <label for="receiveName">姓名</label>
+                    <!--下拉框-->
+                    <span class="inputReceiveName">
+                        <input type="text" id="receiveName" name="receiveName" autocomplete="off" class="name" maxlength="20">
+                        <ul class="nameList receive">
+                        </ul>
+                    </span>
+                    <label for="receivePhoneNumber">电话</label>
+                    <!--下拉框-->
+                    <span class="inputReceiveNum">
+                        <input type="text" id="receivePhoneNumber" name="receivePhoneNumber" autocomplete="off" class="telnum">
+                    </span>
+                    <label for="receiveAddress">地址</label>
+                    <!--下拉框-->
+                    <span>
+                        <input type="text" id="receiveAddress" autocomplete="off" maxlength="20" name="receiveAddress">
+                    </span>
+                    <label for="receiveCode">交货地编码</label>
+                    <!--下拉框-->
+                    <span>
+                         <input type="text" id="receiveCode" name="receiveCode">
+                    </span>
+                </div>
+            </div>
+        </div>
+        <!--货物信息-->
+        <div class="section-second" id="goodsMessage">
+            <h4 class="tl">货物信息</h4>
+            <label for="fe">铁架</label><input type="text" id="fe" name="fe">
+            <label for="box">胶箱</label><input type="text" id="box" name="box">
+            <label for="lastDate">纳期</label><input type="date" class="date" id="lastDate" name="lastDate">
+            <label for="lastTime">纳时</label><input type="text" id="lastTime" name="lastTime">
+        </div>
+        <!--调度信息-->
+        <div class="section-second" id="dispatch">
+            <h4 class="tl">调度信息</h4>
+            <label for="runType">运作方式</label>
+            <input type="text" name="runType" id="runType">
+            <span  class="plateNum">
+                <label for="plateNum">司机车牌</label>
+                <input type="text" id="plateNum" name="plateNum" autocomplete="off">
+                <ul>
+                </ul>
+            </span>
+            <span>
+                <label for="other">备注</label>
+                <input type="text" name="other" id="other">
+            </span>
+        </div>
+        <div class="btn-box">
+            <button type="button" id="saveOrder" class="btn save">保存</button>
+            <button type="reset" id="resetOrder" class="btn reset">清空</button>
+        </div>
+    </form>
+    </div>
+</div>
+<script src="/static/js/orderCreater.js"></script>

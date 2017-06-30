@@ -1,0 +1,70 @@
+.goodsDelay input.time{
+    width: 125px;
+}
+.goodsDelay .tab_nav{
+    min-width: 745px;
+}
+.goodsDelay #goodsSearch{
+    background: #2e8fea;
+    color: #fff;
+}
+.goodsDelay #goodsSearch:hover{
+    background: #3198f8;
+}
+.goodsDelay .pull-right {
+    display: inline-block;
+    margin-top: inherit;
+    margin-right: 8px;
+}
+.goodsDelay .pull-right .btn{
+    color: #666;
+    border: 1px solid #eee;
+    box-shadow: none;
+}
+.goodsDelay .pull-right .active{
+    background: #2e8fea;
+    color: #fff;
+}
+.goodsDelay table{
+    table-layout:fixed
+}
+.goodsDelay tbody td{
+    text-overflow: ellipsis; /* for IE */
+    -moz-text-overflow: ellipsis; /* for Firefox,mozilla,在chrome中测试也通过了*/
+    overflow: hidden;
+    white-space: nowrap;
+}
+.goodsDelay thead{
+    display: block;
+    min-width: 1450px;
+    position: absolute;
+    left: 0;
+    z-index: 100;
+}
+.goodsDelay tbody{
+    position: absolute;
+    min-width: 1450px;
+    left:0;
+    top:38px;
+    overflow: auto;
+    overflow-y: scroll;
+    display: block;
+}
+.goodsDelay tbody tr div{
+     width: 120px;
+ }
+.goodsDelay tbody td:nth-child(1){width: 50px}
+.goodsDelay tbody td:nth-child(2){width: 100px}
+.goodsDelay tbody td:nth-child(3){width: 80px}
+.goodsDelay tbody td:nth-child(4){width: 140px}
+.goodsDelay tbody td:nth-child(5){width: 140px}
+.goodsDelay tbody td:nth-child(6){width: 100px}
+.goodsDelay tbody td:nth-child(7){width: 55px}
+.goodsDelay tbody td:nth-child(8){width: 84px}
+.goodsDelay tbody td:nth-child(9){width: 78px}
+.goodsDelay tbody td:nth-child(10){width: 85px}
+.goodsDelay tbody td:nth-child(11){width: 80px}
+.goodsDelay tbody td:nth-child(12){width: 150px}
+.goodsDelay tbody td:nth-child(13){width: 150px}
+.goodsDelay tbody td:nth-child(14){width: 80px}
+.goodsDelay tbody td:nth-child(15){width: 50px}
