@@ -108,9 +108,9 @@
             <tfoot id="tf">
             <tr>
                 <td style="width:50px">总计</td>
-                <td style="width:60px" id="car_"></td>
+                <td style="width:60px" id="car_">{{ catNum }}</td>
                 <td style="width:60px" id="turn_"></td>
-                <td style="width:93px" id="list_"></td>
+                <td style="width:93px" id="list_">{{ itemNum }} / {{ totalCount }}</td>
                 <td style="width:105px"></td>
                 <td style="width:84px"></td>
                 <td style="width:138px"></td>
@@ -143,8 +143,10 @@
         <div class="turnPage">
             <div>当前第 {{ page }} 页</div>
             <ul class="pager">
+                <li><a href="#" onclick="pagesList(1)">首页</a></li>
                 <li><a href="#" onclick="pagesList({{ page|add:-1 }})">上一页</a></li>
                 <li><a href="#" onclick="pagesList({{ page|add:1 }})">下一页</a></li>
+                <li><a href="#" onclick="pagesList({{ totalPage }})">尾页</a></li>
             </ul>
             <div>共<span> {{ totalPage }} </span>页</div>
         </div>

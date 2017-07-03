@@ -71,7 +71,17 @@ def orderManage(request):
         if int(page) > pagin.num_pages :
             page = pagin.num_pages
         data = pagin.page(page)
-    return render(request, "jiahuaApp/orderManage.html", {"data":data,"page":page,"totalPage":pagin.num_pages,"createTime":createTime,"status":stateType})
+
+        # 总数统计
+        index = 0
+        if len(data) == 0 :
+            catNum = 0
+        else:
+            index = len(data)-1
+            catNum = data[index]['catNum']
+
+        itemNum = len(data)
+    return render(request, "jiahuaApp/orderManage.html", {"data":data,"page":page,"totalPage":pagin.num_pages,"createTime":createTime,"status":stateType,"catNum":catNum,"itemNum":itemNum,"totalCount":pagin.count})
 
 #客户管理
 def clientsManage(request):

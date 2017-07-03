@@ -595,7 +595,6 @@ function orderManage(createTime,page,status) {
         $("#btnGroup").attr("data-time", "");
         $("#name").val("");
     });
-    total();
 }
 //客户管理
 function clientsManage() {
