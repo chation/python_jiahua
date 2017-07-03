@@ -1,18 +1,33 @@
 <div class="orderManage">
     <div class="tab_hd">
         <ul class="table_nav">
-            <li class="active allList" data-index="10"><a href="#all">全部</a><b></b></li>
-            <li class="pendingList" data-index="0"><a href="#pending">待处理</a><b></b></li>
-            <li class="assignedList" data-index="1"><a href="#assigned">已指派</a><b></b></li>
-            <li class="connectedList" data-index="2"><a href="#connected">已接单</a><b></b></li>
-            <li class="loadingList" data-index="3"><a href="#loading">已装货</a><b></b></li>
-            <li class="signList" data-index="4"><a href="#sign">已签收</a><b></b></li>
-            <li class="abnormalList" data-index="5"><a href="#abnormal">异常订单</a><b></b></li>
+            <li class="{% ifequal status "" %}active {% endifequal %}allList" data-index="10"><a href="#all"
+                                                                                                 onclick="orderStatus()">全部</a><b></b>
+            </li>
+            <li class="{% ifequal status "0" %}active {% endifequal %}pendingList" data-index="0"><a href="#pending"
+                                                                                                     onclick="orderStatus(0)">待处理</a><b></b>
+            </li>
+            <li class="{% ifequal status "1" %}active {% endifequal %}assignedList" data-index="1"><a href="#assigned"
+                                                                                                      onclick="orderStatus(1)">已指派</a><b></b>
+            </li>
+            <li class="{% ifequal status "2" %}active {% endifequal %}connectedList" data-index="2"><a href="#connected"
+                                                                                                       onclick="orderStatus(2)">已接单</a><b></b>
+            </li>
+            <li class="{% ifequal status "3" %}active {% endifequal %}loadingList" data-index="3"><a href="#loading"
+                                                                                                     onclick="orderStatus(3)">已装货</a><b></b>
+            </li>
+            <li class="{% ifequal status "4" %}active {% endifequal %}signList" data-index="4"><a href="#sign"
+                                                                                                  onclick="orderStatus(4)">已签收</a><b></b>
+            </li>
+            <li class="{% ifequal status "5" %}active {% endifequal %}abnormalList" data-index="5"><a href="#abnormal"
+                                                                                                      onclick="orderStatus(5)">异常订单</a><b></b>
+            </li>
         </ul>
     </div>
     <div class="time_sort">
         <label>创建日期</label>
-        <input type="date" class="date" id="getGoods">
+        <input type="text" class="date form-control" id="getGoods" value="{{ createTime }}">
+{#        <input type="date" class="date" id="getGoods" value="{{ createTime }}">#}
         <a class="btn search" id="getGoodsSearch">查询</a>
         <a class="btn empty" id="removeSearch">清空</a>
     </div>
@@ -20,7 +35,9 @@
         <table class="table table-bordered" id="orderTab">
             <thead style="height: 30px">
             <tr>
-                <th style="width:50px;padding: 0;text-align: center"><button class="saveall" disabled="true">保存</button></th>
+                <th style="width:50px;padding: 0;text-align: center">
+                    <button class="saveall" disabled="true">保存</button>
+                </th>
                 <th style="width:60px">车次</th>
                 <th style="width:60px">趟数</th>
                 <th style="width:93px">任务清单数</th>
@@ -43,13 +60,57 @@
             </tr>
             </thead>
             <tbody>
+            {% for item in data %}
+                <tr data-id="{{ item.id }}" data-catNum="{{ item.catNum }}" data-tranNum="{{ item.tranNum }}"
+                    plate-num="{% if item.plateNum == null %}{% else %}{{ item.plateNum }}{% endif %}"
+                    data-st="{{ item.problem }}">
+                    <td class="save_btn">
+                        <button class="saveNum" disabled="disabled">保存</button>
+                    </td>
+                    <td class="catNum"><input class="change_ num_" value="{{ item.catNum }}"></td>
+                    <td class="tranNum"><input class="change_ num_" value="{{ item.tranNum }}"></td>
+                    <td class="placeNum"><input class="change_ num_" value="{{ item.placeNum }}"></td>
+                    <td class="getGoodsDate">{{ item.getGoodsDate|date:"Y-m-d" }}</td>
+                    <td class="getGoodsTime">
+                        {% if item.getGoodsTime == null %}{% else %}{{ item.getGoodsTime }}{% endif %}</td>
+                    <td class="sendName" send-add="{{ item.sendAddress }}" send-code="{{ item.sendCode }}"
+                        send-num="{{ item.sendPhoneNumber }}">
+                        <div>{{ item.sendName }}</div>
+                    </td>
+                    <td class="receiveName" re-add="{{ item.receiveAddress }}" re-code="{{ item.receiveCode }}"
+                        re-num="{{ item.receivePhoneNumber }}">
+                        <div>{{ item.receiveName }}</div>
+                    </td>
+                    <td class="stateType">{% if item.stateType == 0 %}待处理{% elif item.stateType == 1 %}
+                        已指派{% elif item.stateType == 2 %}已接单{% elif item.stateType == 3 %}
+                        已装货{% elif item.stateType == 4 %}已签收{% elif item.stateType == 5 %}异常订单{% endif %}</td>
+                    <td class="lastDate">{{ item.lastDate|date:"Y-m-d" }}</td>
+                    <td class="lastTime">{{ item.lastTime }}</td>
+                    <td class="fe">{{ item.fe }}</td>
+                    <td class="box">{{ item.box }}</td>
+                    <td class="plateNum"><input class="carNum" catnum="{{ item.catNum }}" value="{% if item.plateNum == null %}{% else %}{{ item.plateNum }}{% endif %}"><ul></ul><button class="assign_this" data-toggle="modal" data-target="#orderassign">指派</button></td>
+                    <td class="runType">{{ item.runType }}</td>
+                    <td class="receiveCode">{{ item.receiveCode }}</td>
+                    <td class="other"><input class="change_ tips_" value="{{ item.other }}"></td>
+                    <td class="acceptPerson">{{ item.acceptPerson }}</td>
+                    <td>
+                        <div class="operate"><a>操作<span class="caret"></span></a> <span></span>
+                            <ul>
+                                <li><a class="editor">编辑</a></li>
+                                <li><a class="problem" data-toggle="modal" data-target="#orderproblem">异常</a></li>
+                                <li><a class="deleted" data-toggle="modal" data-target="#orderdelet">删除</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
             </tbody>
             <tfoot id="tf">
             <tr>
                 <td style="width:50px">总计</td>
-                <td style="width:60px"></td>
-                <td style="width:60px"></td>
-                <td style="width:93px"></td>
+                <td style="width:60px" id="car_"></td>
+                <td style="width:60px" id="turn_"></td>
+                <td style="width:93px" id="list_"></td>
                 <td style="width:105px"></td>
                 <td style="width:84px"></td>
                 <td style="width:138px"></td>
@@ -57,8 +118,8 @@
                 <td style="width:80px;"></td>
                 <td style="width:106px"></td>
                 <td style="width:84px;"></td>
-                <td style="width:66px;"></td>
-                <td style="width:66px;"></td>
+                <td style="width:66px;" id="fe_"></td>
+                <td style="width:66px;" id="box_"></td>
                 <td style="width:187px;"></td>
                 <td style="width:111px;"></td>
                 <th style="width:70px;"></th>
@@ -79,16 +140,34 @@
             <a class="btn" id="assign">指派发布</a>
             <a class="btn" id="ai_assign" disabled="true">智能调度</a>
         </div>
-{#        <div class="turnPage">#}
-{#            <span></span><span></span>#}
-{#            <span>跳转至</span><input>页#}
-{#            <a>Go</a>#}
-{#            <ul class="pager">#}
-{#                <li><a>上一页</a></li>#}
-{#                <li><a>下一页</a></li>#}
-{#            </ul>#}
-{#            <div>共<span>{{pages}}</span>页</div>#}
-{#        </div>#}
+        <div class="turnPage">
+            <div>当前第 {{ page }} 页</div>
+            <ul class="pager">
+                <li><a href="#" onclick="pagesList({{ page|add:-1 }})">上一页</a></li>
+                <li><a href="#" onclick="pagesList({{ page|add:1 }})">下一页</a></li>
+            </ul>
+            <div>共<span> {{ totalPage }} </span>页</div>
+        </div>
     </div>
 </div>
 <script src="/static/js/order.js"></script>
+<script>
+    $('#getGoods').dcalendarpicker();
+    $('#calendar-demo').dcalendar(); //creates the calendar
+    $("#getGoodsSearch").click(function () {
+        //alert($("#getGoods").val());
+        var createTime = $('#getGoods').val();
+        $("#order").load("/orderManage/?createTime=" + createTime + "&page=1&status=");
+    });
+    function orderStatus(status) {
+        if (!status && status != 0) {
+            status = "";
+        }
+        var createTime = $('#getGoods').val();
+        $("#order").load("/orderManage/?createTime=" + createTime + "&page=1&status=" + status);
+    }
+    function pagesList(page){
+        var createTime = $('#getGoods').val();
+        $("#order").load("/orderManage/?createTime=" + createTime + "&page="+page+"&status=");
+    }
+</script>

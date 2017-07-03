@@ -262,3 +262,5 @@ td,th{
 #extra td{
     border: none;
 }
+.time_sort .form-control{display: inline-block;}
+.time_sort .calendar{z-index: 10000;}

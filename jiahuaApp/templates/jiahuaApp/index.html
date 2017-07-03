@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="/static/css/order.css">
     <link rel="stylesheet" href="/static/css/clients.css">
     <link rel="stylesheet" href="/static/css/goods.css">
+    <link rel="stylesheet" href="/static/css/dcalendar.picker.css">
+    <link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
 </head>
 <body>
     <div class="top">
@@ -68,10 +70,14 @@
                 <a href="" class="lastMonth">上月</a>
                 <a href="" class="thisMonth">本月</a>
                 <div>
-                    <label for="startTime">日期</label>
-                    <input type="date" id="startTime">
-                    <label for="endTime">至</label>
-                    <input type="date" id="endTime">
+                    <div style="display: inline-block">
+                        <label for="startTime">日期</label>
+                        <input type="text" id="startTime">
+                    </div>
+                   <div style="display: inline-block">
+                       <label for="endTime">至</label>
+                       <input type="text" id="endTime">
+                   </div>
                 </div>
                 <label for="name">司机姓名</label>
                 <input type="text" name="name" id="name" autocomplete="off">
@@ -153,5 +159,12 @@
     <script src="/static/js/Chart.min.js"></script>
     <script src="/static/js/index.js"></script>
     <script src="/static/js/order.js"></script>
+    <script src="/static/js/dcalendar.picker.js"></script>
+    <script>
+        $('#startTime').dcalendarpicker();
+        $('#calendar-startTime').dcalendar(); //creates the calendar
+        $('#endTime').dcalendarpicker();
+        $('#calendar-endTime').dcalendar(); //creates the calendar
+    </script>
 </body>
 </html>

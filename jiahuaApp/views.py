@@ -5,8 +5,10 @@ from django.http import HttpResponse
 from jiahuaApp import forms
 from models import OrderForm
 from commonLib import packJson
+from jiahuaApp import commonLib
 import json
 import time,datetime
+import re
 from django.core.paginator import Paginator
 
 # Create your views here.
@@ -28,12 +30,48 @@ def createForm(request):
 #订单管理
 def orderManage(request):
     # todo ...
-    # createTime = time.strftime("%Y-%m-%d")
-    # orderQuerySet = OrderForm.objects.filter(createTime=createTime)
-    # pagin = Paginator(orderQuerySet, 100)
-    # pageCount = pagin.count
-    # print pageCount   {'pages':pageCount}
-    return render(request,"jiahuaApp/orderManage.html")
+    if request.method == "GET":
+        # 创建时间
+        createTime = request.GET["createTime"] if request.GET.get("createTime", None) else request.GET.getlist(
+            "createTime[]", None)
+        if not createTime:
+            createTime = time.strftime("%Y-%m-%d")
+
+        if isinstance(createTime, list):
+            orderQuerySet = OrderForm.objects.filter(createTime__range=(createTime[0], createTime[1]))
+        elif re.match(r'\d{4}-\d{1,2}-\d{1,2}', createTime):
+            orderQuerySet = OrderForm.objects.filter(createTime=createTime)
+        else:
+            return commonLib.statusJson(status=400, message=u"createTime字段格式有误,正确格式[yyyy-mm-dd]")
+        # 订单状态
+        stateType = request.GET.get("status", None)
+        if stateType:
+            orderQuerySet = orderQuerySet.filter(stateType=stateType)
+        # 是否查询单个司机
+        name = request.GET.get("name", None)
+        if name:
+            if stateType and int(stateType) == 1:
+                plateNum = Driver().get_plateNum_by_name(name)
+                orderQuerySet = orderQuerySet.filter(plateNum=plateNum)
+            else:
+                orderQuerySet = orderQuerySet.filter(receiveFormPerson=name)
+        # 异常订单查询
+        problem = request.GET.get("problem")
+        if problem == "1" or problem == 1:
+            orderQuerySet = orderQuerySet.filter(problem=1)
+        # 排序
+        orderQuerySet = orderQuerySet.order_by("-createTime", "catNum", "tranNum", "placeNum")
+        orderList = list(orderQuerySet.values())
+
+        # 创建分页
+        pagin = Paginator(orderList, 100)
+        page = request.GET.get("page",1)
+        if int(page) <= 0 :
+            page = 1
+        if int(page) > pagin.num_pages :
+            page = pagin.num_pages
+        data = pagin.page(page)
+    return render(request, "jiahuaApp/orderManage.html", {"data":data,"page":page,"totalPage":pagin.num_pages,"createTime":createTime,"status":stateType})
 
 #客户管理
 def clientsManage(request):
