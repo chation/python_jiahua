@@ -296,15 +296,9 @@ def orderQuery(request):
         if problem == "1" or problem ==1:
             orderQuerySet = orderQuerySet.filter(problem = 1)
         #排序
-        orderQuerySet = orderQuerySet.order_by("-createTime","catNum","tranNum","placeNum")
+        orderQuerySet = orderQuerySet.order_by("-createTime", "catNum", "tranNum", "placeNum")
         orderList = list(orderQuerySet.values())
-
-        # 创建分页
-        page = request.POST["page"]
-        pagin = Paginator(orderList, 10)
-        # print pagin.page(page)
-
-        return commonLib.statusJson(body=pagin.page(1).object_list)
+        return commonLib.statusJson(body=orderList)
 
 #查询订单统计
 def orderCount(request):
