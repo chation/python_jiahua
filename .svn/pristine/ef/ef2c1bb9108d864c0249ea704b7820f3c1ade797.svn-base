@@ -1,0 +1,16 @@
+<div class="tab_box commonTab">
+    <table class="table table-bordered" id="historyOrd">
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>操作员</th>
+            <th>动作</th>
+            <th>操作时间</th>
+            <th>内容</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+<script src="/static/js/operateHistory.js"></script>

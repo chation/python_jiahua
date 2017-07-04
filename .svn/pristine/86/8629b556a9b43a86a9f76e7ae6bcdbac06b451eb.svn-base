@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1">
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="/static/js/prefixfree.min.js"></script>
+    <title>登陆界面</title>
+    <link href='//cdn.webfont.youziku.com/webfonts/nomal/99467/45803/58bd268ff629da187c87f39e.css' rel='stylesheet' type='text/css' />
+    <link rel="stylesheet" href="/static/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/css/normalize.css">
+    <style type="text/css">
+        body {
+            background-color: #326696;
+            margin: 0;
+            overflow: hidden;
+            font-family:Monospace,Microsoft Yahei,"Open Sans", sans-serif;
+            text-align:center;
+            font-weight: bold;
+            height: 100vh;
+            background-size: cover;
+        }
+        a {
+            color:#0078ff;
+        }
+        .clearfix{
+            display: none;
+        }
+        /* NOTE: The styles were added inline because Prefixfree needs access to your styles and they must be inlined if they are on local disk! */
+        body {
+        }
+        @keyframes spinner {
+            0% {
+                transform: rotateZ(0deg);
+            }
+            100% {
+                transform: rotateZ(359deg);
+            }
+        }
+        * {
+            box-sizing: border-box;
+        }
+        .wrapper {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            justify-content: center;
+            width: 100%;
+            min-height: 100%;
+            padding: 20px;
+            position: absolute;
+            top: 0;
+        }
+        #head_tl {
+            width: 100%;
+            height: 90px;
+            display: block;
+        }
+        h3{
+            margin: 20px auto 20px auto;
+            text-align: center;
+            color: #fff;
+            font-size: 50px;
+            font-weight: bold;
+            text-shadow: 0 1px 1px #555;
+            display: block;
+            width: 100%;
+            letter-spacing: 10px;
+        }
+        .login {
+            font-family: 微软雅黑;
+            border-radius: 10px;
+            padding: 10px 20px 20px 20px;
+            width: 90%;
+            max-width: 450px;
+            background: rgba(255, 255, 255, 0.29);
+            position: relative;
+            padding-bottom: 80px;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+            margin: 50px auto;
+            height: 330px;
+        }
+        .login.loading .state {
+            max-height: 100%;
+            padding-top: 50px;
+        }
+        .login.ok .state {
+            background-color: #8bc34a;
+        }
+        .login input {
+            display: block;
+            padding: 15px 10px;
+            margin-bottom: 10px;
+            width: 80%;
+            float: right;
+            border: 1px solid #ddd;
+            transition: border-width 0.2s ease;
+            border-radius: 2px;
+            color: #ccc;
+            background: rgba(190, 211, 228, 0.42);
+        }
+        .login input + i.fa {
+            color: #fff;
+            font-size: 1em;
+            position: absolute;
+            margin-top: -47px;
+            opacity: 0;
+            left: 0;
+            transition: all 0.1s ease-in;
+            bottom: 175px;
+        }
+        .login input + i.fa-key{
+            bottom: 110px;
+        }
+        .login input:focus {
+            outline: none;
+            color: #444;
+            border-color: #2196F3;
+            border-left-width: 35px;
+        }
+        .login input:focus + i.fa {
+            opacity: 1;
+            left: 112px;
+            transition: all 0.1s ease-out;
+            bottom: 175px;
+        }
+        .login input:focus + i.fa-key{
+            bottom: 110px;
+        }
+        .login a {
+            font-size: 0.8em;
+            color: #2196F3;
+            text-decoration: none;
+        }
+        .login .title {
+            color: #444;
+            font-size: 30px;
+            text-align: center;
+            font-weight: bold;
+            margin: 10px 0 30px 0;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+        }
+        .login span{
+            font-size: 25px;
+            font-weight: normal;
+            color: #555;
+            display: inline-block;
+            line-height: 60px;
+            float: left;
+        }
+        #con{
+            width: 100%;
+            display: block;
+            height: 20px;
+            text-align: center;
+        }
+        .login .state {
+            width: 100%;
+            height: 100%;
+            padding: 10px 10px;
+            background: rgba(33, 150, 243, 0.32);
+            color: #fff;
+            display: block;
+            border: none;
+            margin-top: 20px;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            max-height: 60px;
+            border-radius: 0 0 10px 10px;;
+            transform: rotateZ(0deg);
+            transition: all 0.1s ease-out;
+            border-bottom-width: 7px;
+            margin-bottom: 0;
+            font-size: 25px;
+        }
+        .login:not(.loading) .state:hover {
+            box-shadow: 0 1px 3px #2196F3;
+            background: #2B8ACA;
+        }
+        .login:not(.loading) .state:focus {
+            border-bottom-width: 4px;
+            color: #fff;
+        }
+        footer {
+            display: block;
+            padding-top: 50px;
+            text-align: center;
+            color: #ddd;
+            font-weight: normal;
+            text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+            font-size: 0.8em;
+        }
+        footer a, footer a:link {
+            color: #fff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<script type="text/javascript" src="/static/assets/three.min.js"></script>
+<script type="text/javascript" src="/static/assets/Detector.js"></script>
+<script id="vs" type="x-shader/x-vertex">
+
+			varying vec2 vUv;
+
+			void main() {
+
+				vUv = uv;
+				gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+
+			}
+
+</script>
+<script id="fs" type="x-shader/x-fragment">
+
+			uniform sampler2D map;
+
+			uniform vec3 fogColor;
+			uniform float fogNear;
+			uniform float fogFar;
+
+			varying vec2 vUv;
+
+			void main() {
+
+				float depth = gl_FragCoord.z / gl_FragCoord.w;
+				float fogFactor = smoothstep( fogNear, fogFar, depth );
+
+				gl_FragColor = texture2D( map, vUv );
+				gl_FragColor.w *= pow( gl_FragCoord.z, 20.0 );
+				gl_FragColor = mix( gl_FragColor, vec4( fogColor, gl_FragColor.w ), fogFactor );
+
+			}
+
+		</script>
+<script type="text/javascript">
+
+    if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
+
+    var container;
+    var camera, scene, renderer;
+    var mesh, geometry, material;
+
+    var mouseX = 0, mouseY = 0;
+    var start_time = Date.now();
+
+    var windowHalfX = window.innerWidth / 2;
+    var windowHalfY = window.innerHeight / 2;
+
+    init();
+
+    function init() {
+
+        container = document.createElement( 'div' );
+        document.body.appendChild( container );
+
+        // Bg gradient
+
+        var canvas = document.createElement( 'canvas' );
+        canvas.width = 32;
+        canvas.height = window.innerHeight;
+
+        var context = canvas.getContext( '2d' );
+
+        var gradient = context.createLinearGradient( 0, 0, 0, canvas.height );
+        gradient.addColorStop(0, "#1e4877");
+        gradient.addColorStop(0.5, "#4584b4");
+
+        context.fillStyle = gradient;
+        context.fillRect(0, 0, canvas.width, canvas.height);
+
+        container.style.background = 'url(' + canvas.toDataURL('image/png') + ')';
+        container.style.backgroundSize = '32px 100%';
+
+        //
+
+        camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 3000 );
+        camera.position.z = 6000;
+
+        scene = new THREE.Scene();
+
+        geometry = new THREE.Geometry();
+
+        var texture = THREE.ImageUtils.loadTexture( '/static/image/cloud10.png', null, animate );
+        texture.magFilter = THREE.LinearMipMapLinearFilter;
+        texture.minFilter = THREE.LinearMipMapLinearFilter;
+
+        var fog = new THREE.Fog( 0x4584b4, - 100, 3000 );
+
+        material = new THREE.ShaderMaterial( {
+
+            uniforms: {
+
+                "map": { type: "t", value: texture },
+                "fogColor" : { type: "c", value: fog.color },
+                "fogNear" : { type: "f", value: fog.near },
+                "fogFar" : { type: "f", value: fog.far },
+
+            },
+            vertexShader: document.getElementById( 'vs' ).textContent,
+            fragmentShader: document.getElementById( 'fs' ).textContent,
+            depthWrite: false,
+            depthTest: false,
+            transparent: true
+
+        } );
+
+        var plane = new THREE.Mesh( new THREE.PlaneGeometry( 64, 64 ) );
+
+        for ( var i = 0; i < 8000; i++ ) {
+
+            plane.position.x = Math.random() * 1000 - 500;
+            plane.position.y = - Math.random() * Math.random() * 200 - 15;
+            plane.position.z = i;
+            plane.rotation.z = Math.random() * Math.PI;
+            plane.scale.x = plane.scale.y = Math.random() * Math.random() * 1.5 + 0.5;
+
+            THREE.GeometryUtils.merge( geometry, plane );
+
+        }
+
+        mesh = new THREE.Mesh( geometry, material );
+        scene.add( mesh );
+
+        mesh = new THREE.Mesh( geometry, material );
+        mesh.position.z = - 8000;
+        scene.add( mesh );
+
+        renderer = new THREE.WebGLRenderer( { antialias: false } );
+        renderer.setSize( window.innerWidth, window.innerHeight );
+        container.appendChild( renderer.domElement );
+
+        document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+        window.addEventListener( 'resize', onWindowResize, false );
+
+    }
+
+    function onDocumentMouseMove( event ) {
+
+        mouseX = ( event.clientX - windowHalfX ) * 0.25;
+        mouseY = ( event.clientY - windowHalfY ) * 0.15;
+
+    }
+
+    function onWindowResize( event ) {
+
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize( window.innerWidth, window.innerHeight );
+
+    }
+
+    function animate() {
+
+        requestAnimationFrame( animate );
+
+        position = ( ( Date.now() - start_time ) * 0.03 ) % 8000;
+
+        camera.position.x += ( mouseX - camera.position.x ) * 0.01;
+        camera.position.y += ( - mouseY - camera.position.y ) * 0.01;
+        camera.position.z = - position + 8000;
+
+        renderer.render( scene, camera );
+
+    }
+
+</script>
+<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<div class="form-wrapper wrapper">
+    <div id="head_tl">
+        <h3 style="display: none;font-family:'LiDeBiao-Xing394807e7d81848b';">东丰公司乘用车物流管理系统</h3>
+    </div>
+    <form method="post" action="." class="login">
+        <p class="title">登　　录</p>
+        <div id="con"></div>
+
+        <span>账号：</span><input type="text" name="username" id="user" placeholder="请输入账号" autocomplete="off" autofocus/>
+        <i class="fa fa-user"></i>
+
+        <span>密码：</span><input type ="text" onfocus="this.type='password'" name="password" id="password" placeholder="请输入密码" autocomplete="off">
+        <i class="fa fa-key"></i>
+
+        <input type="submit" value="确　　定" class="state" id="login_btn">
+    </form>
+    <footer><a href="#"></a></footer>
+</div>
+<script type="text/javascript" src="/static/js/login.js"></script>
+</body>
+</html>

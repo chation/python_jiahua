@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>历史订单</title>
+    <link rel="stylesheet" href="/static/css/weui.css">
+    <style>
+        body{font-size: 14px;font-family: "microsoft yahei", Arial, Helvetica, sans-serif;}
+        a{text-decoration: none}
+        #historyOrder{
+            width: 100%;
+            text-align: center;
+            border-left: 1px solid #ccc;
+            border-top:1px solid #ccc;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        #historyOrder th,#historyOrder td{
+            padding:5px 0;
+            border-right: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
+        }
+        #historyOrder td>button{
+            padding:3px 5px;
+            background: #04be02;
+            border-radius: 3px;
+            color:#fff;
+            outline: none;
+            border:0;
+        }
+    </style>
+</head>
+<body ontouchstart>
+<div class="container">
+    <table id="historyOrder" >
+        <thead>
+        <tr>
+            <th style="width: 20%">编号</th>
+            <th style="width: 18%">发货人</th>
+            <th style="width: 18%">收货人</th>
+            <th style="width: 22%">纳期</th>
+            <th style="width: 10%">纳时</th>
+
+            <th style="width: 12%">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+</div>
+<!--确认弹窗-->
+<div id="dialog1" style="display: none">
+    <div class="weui-mask"></div>
+    <div class="weui-dialog">
+        <div class="weui-dialog__hd"><strong class="weui-dialog__title">确认信息</strong></div>
+        <div class="weui-dialog__bd" id="confirmMsg"></div>
+        <div class="weui-dialog__ft">
+            <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_default cancel" >取消</a>
+            <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary confirmStatus">确定</a>
+        </div>
+    </div>
+</div>
+<script src="/static/js/jquery-1.11.3.js"></script>
+<script src="/static/js/weui.min.js"></script>
+<script>
+    //页面加载出现的列表
+    var data={{data2|safe}};
+    console.log(data);
+    var tbody= $("#historyOrder tbody");
+    var html="";
+    for(var i=0;i<data.length;i++){
+        if(data[i].createTime.slice(8,9)==0){
+            var t=data[i].createTime.slice(9,10);
+        }else{
+            var t=data[i].createTime.slice(8,10);
+        }
+        var cn=data[i].catNum;
+        var tn=data[i].tranNum;
+        html+='<tr><td>'+t+'号'+'-'+cn+'-'+tn+'</td><td>'+data[i].sendName+'</td><td>'+data[i].receiveName+'</td><td>'+data[i].lastDate+'</td><td>'+data[i].lastTime+'</td><td><button class="statusMsg" data-id="'+data[i].id+'" data-status="'+data[i].stateType+'"></button></td></tr>';
+    }
+    tbody.html(html);
+    //当订单状态不同时，出现不同的按钮
+    var statusMsg=$(".statusMsg");
+    statusMsg.text("接单");
+    statusMsg.each(function(){
+        var val=$(this).attr("data-status");
+        if(val<2){
+            $(this).text("接单");
+        } else if(val==2){
+            $(this).text("装货");
+        }else if(val==3){
+            $(this).text("签收");
+        }else if(val==4){
+            $(this).text("完成");
+            $(this).css("background","#999");
+        }
+    });
+    //当点击按钮时弹出提示窗口
+    tbody.on("touchstart click",".statusMsg",function (e) {
+        e.preventDefault();
+        var text=$(this).text();
+        $("#confirmMsg").text("是否确认"+text);
+        var id=$(this).attr("data-id");
+        var stateType=$(this).attr("data-status");
+        if(stateType<2){
+            stateType=2;
+            $("#dialog1").css("display","block");
+        }else if(stateType==2){
+            stateType=3;
+            $("#dialog1").css("display","block");
+        }else if(stateType==3){
+            stateType=4;
+            $("#dialog1").css("display","block");
+        }else if(stateType=4){
+            $(this).css("disabled","disabled");
+        }
+        $("#dialog1").attr({"data-id":id,"data-status":stateType});
+        //当点击确认提交订单状态及Id
+        $(".confirmStatus").on("touchstart click",function () {
+            e.preventDefault();
+            var dialog= $("#dialog1");
+            dialog.css("display","none");
+            var id=parseInt(dialog.attr("data-id"));
+            var stateType=dialog.attr("data-status");
+            //获得url上name的值
+            var Request = new Object();
+            Request = GetRequest();
+            var name=Request['name'];
+            $.ajax({
+                type:"post",
+                url:"/wechat/order/state/",
+                data:{orderList:[id],name:name,problem:1},
+                success:function (data) {
+                    //$("#toast").css("display","block").delay(2000).fadeOut();
+                    window.location.reload();//刷新页面
+                    dialog.attr("data-id",'');
+                    dialog.attr("data-status",'');
+                }
+            });
+        });
+        //点击取消
+        cancel();
+    });
+    //隐藏dialog1
+    function cancel(){
+        $(".cancel").click(function () {
+            $("#dialog1").css("display","none");
+        })
+    }
+    //获得url上键值
+    function GetRequest() {
+        var url = location.search; //获取url中"?"符后的字串
+        var theRequest = new Object();
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            strs = str.split("&");
+            for(var i = 0; i < strs.length; i ++) {
+                theRequest[strs[i].split("=")[0]]=decodeURI(strs[i].split("=")[1]);
+            }
+        }
+        return theRequest;
+    }
+</script>
+</body>
+</html>

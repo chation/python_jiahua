@@ -1,0 +1,100 @@
+#coding:utf-8
+from django.contrib.auth.models import User
+from django.contrib import auth
+from django.shortcuts import render_to_response
+from django.template import RequestContext
+from django.http import HttpResponseRedirect 
+import commonLib
+
+
+#用户登录
+def userLogin(request):  
+    if request.user.is_authenticated():#如果用户已经登录
+        return HttpResponseRedirect("/")  
+    if request.method=='POST':  
+        username=request.POST.get('username','')  
+        password=request.POST.get('password','')  
+        user= auth.authenticate(username=username,password=password)
+        if user and user.is_active:  
+            auth.login(request, user)
+            return HttpResponseRedirect("/")  
+                
+    return render_to_response("registration/login.html",RequestContext(request,{}))   
+
+#用户注销
+def userLogout(request):  
+    auth.logout(request)  
+    return HttpResponseRedirect('/accounts/login')
+
+#用户注册
+def userRegister(request):     
+    if  not request.user.is_superuser:
+        return commonLib.statusJson(status=400,message="请通知管理员注册")
+    try:  
+        if request.method=='POST':  
+            username=request.POST.get('username','')  
+            password=request.POST.get('password','')
+            name = request.POST.get('name','')
+            email=request.POST.get('email','')  
+            if not username or not password or not name:
+                return commonLib.statusJson(status=400,message="必填项不能为空")
+            user = User.objects.create_user(username, email,password)
+            user.last_name = name
+            user.save() 
+            return commonLib.statusJson()
+    except Exception,e:  
+        return commonLib.statusJson(status=400,message=str(e))
+      
+    #return render_to_response("blog/userregister.html",RequestContext(request,{'curtime':curtime}))  
+
+#用户查询
+def userQuery(request):
+    if request.user.is_superuser:
+        user=User.objects.all().values()
+    else:
+        user=User.objects.exclude(is_superuser=1).values()
+    userList = list(user)
+    return commonLib.statusJson(body=userList)
+
+#用户删除
+def userDelete(request):
+    try:
+        if request.user.is_superuser:
+            id = request.POST.get("id")
+            u = User.objects.get(id=int(id))
+            if u.username == request.user.username:
+                return commonLib.statusJson(status=400, message="别闹!")
+            u.delete()
+            return commonLib.statusJson()
+        return commonLib.statusJson(status=400, message="已通知管理员")
+    except Exception,e:
+        return commonLib.statusJson(status=400, message=str(e))
+
+#密码修改
+def change_password(request):
+    if request.method=='POST': 
+        username = request.user.username
+        oldPassword = request.POST.get("oldPassword")
+        newPassword = request.POST.get("newPassword")
+        user= auth.authenticate(username=username,password=oldPassword)
+        if not user:
+            return  commonLib.statusJson(status=400, message="密码输入有误")
+        u = User.objects.get(username=username)
+        u.set_password(newPassword)
+        u.save()  
+        return commonLib.statusJson()
+
+#用户激活
+def userActive(request):
+    if request.user.is_superuser:
+        id = request.POST.get("id")
+        u = User.objects.get(id=id)
+        if u.username == request.user.username:
+            return commonLib.statusJson(status=400, message="别闹!")
+        if u.is_active == 1:
+            u.is_active = 0
+        else:
+            u.is_active = 1
+        u.save()
+        return commonLib.statusJson()
+    return commonLib.statusJson(status=400, message="已通知管理员")    

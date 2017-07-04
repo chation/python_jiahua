@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body{font-size: 14px;font-family: "microsoft yahei", Arial, Helvetica, sans-serif;}
+        #tablist{
+            width: 100%;
+            text-align: center;
+            border-left: 1px solid #ccc;
+            border-top:1px solid #ccc;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        #tablist th,#tablist td{
+            padding:5px 0;
+            border-right: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <table id="tablist" style="width: 100%">
+        <thead>
+        <tr>
+            <th style="width: 10%">日期</th>
+            <th style="width: 20%">车次</th>
+            <th style="width: 25%">发货人</th>
+            <th style="width: 25%">收货人</th>
+            <th style="width: 20%">订单状态</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<div class="clientsManage">
+    <div class="cM_hd">
+        <a data-toggle="modal" data-target="#addClient" id="addNewClient">添加新用户</a>
+        <div class="sort pull-right">
+            <a href="#sendClients" class="active">发货人</a>
+            <a href="#receiveClients">收货人</a>
+        </div>
+    </div>
+    <div class="tab_box active commonTab"  id="sendClients">
+        <table class="table table-bordered active">
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>发货人</th>
+                <th>联系电话</th>
+                <th>联系地址</th>
+                <th>出货地编码</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <div class="tab_box commonTab"  id="receiveClients">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>收货人</th>
+                <th>联系电话</th>
+                <th>联系地址</th>
+                <th>交货地编码</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="/static/js/clients.js"></script>
