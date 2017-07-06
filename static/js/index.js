@@ -190,7 +190,7 @@ $(function () {
             uploadFile();
         } else if (id === "#order") {
             orderManage();
-            default_list();
+            //default_list();
         } else if (id === '#driver') {
             driver();
         } else if (id === '#client') {
@@ -223,25 +223,15 @@ $(function () {
         $("#main").removeClass("active");
         $("#order").addClass("active");
         if ($(this).attr("class") == "group1") {
-            $("#order").load("/orderManage/", function () {
-                $(".pendingList").trigger("click");
-            });
+            $("#order").load("/orderManage/?createTime[]="+$('#startTime').val()+"&createTime[]="+$('#endTime').val()+"&page=1&status=0&name="+$("#name").val());
         } else if ($(this).attr("class") == "group2") {
-            $("#order").load("/orderManage/", function () {
-                $(".assignedList").trigger("click");
-            });
+            $("#order").load("/orderManage/?createTime[]="+$('#startTime').val()+"&createTime[]="+$('#endTime').val()+"&page=1&status=1&name="+$("#name").val());
         } else if ($(this).attr("class") == "group3") {
-            $("#order").load("/orderManage/", function () {
-                $(".connectedList").trigger("click");
-            });
+            $("#order").load("/orderManage/?createTime[]="+$('#startTime').val()+"&createTime[]="+$('#endTime').val()+"&page=1&status=2&name="+$("#name").val());
         } else if ($(this).attr("class") == "group4") {
-            $("#order").load("/orderManage/", function () {
-                $(".loadingList").trigger("click");
-            });
+            $("#order").load("/orderManage/?createTime[]="+$('#startTime').val()+"&createTime[]="+$('#endTime').val()+"&page=1&status=3&name="+$("#name").val());
         } else if ($(this).attr("class") == "group5") {
-            $("#order").load("/orderManage/", function () {
-                $(".signList").trigger("click");
-            });
+            $("#order").load("/orderManage/?createTime[]="+$('#startTime').val()+"&createTime[]="+$('#endTime').val()+"&page=1&status=4&name="+$("#name").val());
         }
     });
     //订单状态淡入
@@ -540,25 +530,15 @@ $(function () {
             $("#order").addClass("active");
             $("#btnGroup").attr("data-time",createTime);
             if ($(this).attr("class") == "group1") {
-                $("#order").load("/orderManage/", function () {
-                    $(".pendingList").trigger("click");
-                });
+                $("#order").load("/orderManage/?createTime[]="+$('#startTime').val()+"&createTime[]="+$('#endTime').val()+"&page=1&status=0&name="+$("#name").val());
             } else if ($(this).attr("class") == "group2") {
-                $("#order").load("/orderManage/", function () {
-                    $(".assignedList").trigger("click");
-                });
+                $("#order").load("/orderManage/?createTime[]="+$('#startTime').val()+"&createTime[]="+$('#endTime').val()+"&page=1&status=1&name="+$("#name").val());
             } else if ($(this).attr("class") == "group3") {
-                $("#order").load("/orderManage/", function () {
-                    $(".connectedList").trigger("click");
-                });
+                $("#order").load("/orderManage/?createTime[]="+$('#startTime').val()+"&createTime[]="+$('#endTime').val()+"&page=1&status=2&name="+$("#name").val());
             } else if ($(this).attr("class") == "group4") {
-                $("#order").load("/orderManage/", function () {
-                    $(".loadingList").trigger("click");
-                });
+                $("#order").load("/orderManage/?createTime[]="+$('#startTime').val()+"&createTime[]="+$('#endTime').val()+"&page=1&status=3&name="+$("#name").val());
             } else if ($(this).attr("class") == "group5") {
-                $("#order").load("/orderManage/", function () {
-                    $(".signList").trigger("click");
-                });
+                $("#order").load("/orderManage/?createTime[]="+$('#startTime').val()+"&createTime[]="+$('#endTime').val()+"&page=1&status=4&name="+$("#name").val());
             }
         });
     });
@@ -576,8 +556,22 @@ function uploadFile() {
     $("#load").load("/uploadFile/")
 }
 //订单管理
-function orderManage() {
-    $("#order").load("/orderManage/",function () {
+function p(s) {return s < 10 ? '0' + s: s;}
+function orderManage(createTime,page,status) {
+    if(!createTime){
+        var myDate = new Date();
+        var year=myDate.getFullYear();
+        var month=myDate.getMonth()+1;
+        var date=myDate.getDate();
+        createTime = year+"-"+p(month)+"-"+p(date);
+    }
+    if(!page){
+        page = 1;
+    }
+    if(!status){
+        status = 10;
+    }
+    $("#order").load("/orderManage/?createTime="+createTime+"&page="+page+"&status="+status,function () {
         $("#btnGroup").attr("data-time", "");
         $("#name").val("");
     });
@@ -656,6 +650,7 @@ function promptBox() {
 function warningClass() {
     $("#promptBox").removeClass("warning");
 }
+/*
 function default_list() {
     function p(s) {return s < 10 ? '0' + s: s;}
     var myDate = new Date();
@@ -666,7 +661,7 @@ function default_list() {
     $.ajax({
         type: "post",
         url: '/json/order/query/',
-        data:{createTime:createTime},
+        data:{createTime:createTime,page:1},
         beforeSend: function () {
             $("#loading").show();
         },
@@ -755,6 +750,7 @@ function default_list() {
         }
     });
 }
+*/
 //获取司机车牌
 function getcarlist(){
     var carlist="";
@@ -788,6 +784,7 @@ function getcarlist(){
 
 //合计
 //循环tbody tr td:eq1,2,3,11,12
+/*
 function total() {
     var a = 0;
     var b = 0;
@@ -823,12 +820,13 @@ function total() {
         .each(function () {
             e += parseInt($(this)[0].innerHTML);
         });
-    $(".orderManage .tab_box tfoot tr td:eq(1)")[0].innerHTML = a;
-    $(".orderManage .tab_box tfoot tr td:eq(2)")[0].innerHTML = b;
-    $(".orderManage .tab_box tfoot tr td:eq(3)")[0].innerHTML = c;
-    $(".orderManage .tab_box tfoot tr td:eq(11)")[0].innerHTML = d;
-    $(".orderManage .tab_box tfoot tr td:eq(12)")[0].innerHTML = e;
+    $("#car_").innerHTML = a;
+    $("#turn_").innerHTML = b;
+    $("#list_").innerHTML = c;
+    $("#fe_").innerHTML = d;
+    $("#box_").innerHTML = e;
 }
+*/
 //根据车次修改背景颜色
 function bg_catNum() {
     var tr_carnum = [];
@@ -883,7 +881,7 @@ function input_num(){
 
 function null_(){
     $(".tab_box tbody").find("td").each(function(){
-        if ($(this).text()=="null"){
+        if ($(this).text()=="None"){
             $(this).text("");
         }
     })

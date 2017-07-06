@@ -300,6 +300,7 @@ a:hover{
     border-radius: 10px;
     margin:0 20px;
     display: none;
+    cursor: pointer;
 }
 #btnGroup>div>div{
     padding:10px 0 5px;

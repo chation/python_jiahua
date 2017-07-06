@@ -14,9 +14,6 @@ if (typeof jQuery === 'undefined') { throw new Error('DCalendar.Picker: This plu
 +function ($) {
 
 	Date.prototype.getDays = function() { return new Date(this.getFullYear(), this.getMonth() + 1, 0).getDate(); };
-	//var months = ['January','February','March','April','May','June','July','August','September','October','November','December'],
-		//short_months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
-		//daysofweek = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
     var months = ['01','02','03','04','05','06','07','08','09','10','11','12'],
         short_months =['01','02','03','04','05','06','07','08','09','10','11','12'],
         daysofweek = ['日','一','二','三','四','五','六'],
@@ -76,7 +73,7 @@ if (typeof jQuery === 'undefined') { throw new Error('DCalendar.Picker: This plu
 					var selected = new Date(cyear, cmonth - 1, sdate);
 					if ((that.minDate && selected < min) || (that.maxDate && selected > max)) return;
 
-					that.selected = cyear + '-' + cmonth + '-' +sdate ;
+                that.selected = cmonth + '/' + sdate + '/' + cyear;
 
 					if(that.options.mode === 'datepicker') {
 						that.calendar.find('td').removeClass('selected');
@@ -122,7 +119,7 @@ if (typeof jQuery === 'undefined') { throw new Error('DCalendar.Picker: This plu
 				dateObj = that.reformatDate(that.calendar.prev().val()),
 				value = isNaN(parseInt(dateObj.m)) ? new Date(dateObj.m + " " + dateObj.d + ", " + dateObj.y) : new Date(dateObj.y, dateObj.m - 1, dateObj.d);
 
-			that.selected = value.getFullYear()+ "-" + (value.getMonth() + 1)  + "-" +value.getDate() ;
+            that.selected = (value.getMonth() + 1) + "/" + value.getDate() + "/" + value.getFullYear();
 			that.selectDate();
 			that.date = value;
 			that.create(that.viewMode);
