@@ -5,6 +5,7 @@ $(function () {
         type:"post",
         url:"/json/cat/query/",
         success:function (data) {
+            console.log(data);
             data=jQuery.parseJSON(data).body;
             var html="";
             for(var i=0;i<data.length;i++){

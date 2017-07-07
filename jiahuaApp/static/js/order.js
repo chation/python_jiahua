@@ -796,7 +796,7 @@ $(document).ready(function(){
     }
     function tbody_ajust(){
         null_();
-        unique();
+        //unique();
         add_tr();
         //total();
         bg_catNum();
