@@ -5,12 +5,11 @@ $(function () {
         type:"post",
         url:"/json/cat/query/",
         success:function (data) {
-            console.log(data);
             data=jQuery.parseJSON(data).body;
             var html="";
             for(var i=0;i<data.length;i++){
                 var a=i+1;
-                html+='<tr><td>'+a+'</td><td><img src="'+data[i][4]+'" alt="" style="width: 20px;height: 20px"></td><td>'+data[i][0]+'</td><td>'+data[i][1]+'</td><td>'+data[i][2]+'</td><td>'+data[i][3]+'</td><td><a class="positionMsg" data-name="'+data[i][0]+'">地图</a></td></tr>';
+                html+='<tr data-id="'+data[i][5]+'"><td>'+a+'</td><td><img src="'+data[i][4]+'" alt="" style="width: 20px;height: 20px"></td><td>'+data[i][0]+'</td><td>'+data[i][1]+'</td><td>'+data[i][2]+'</td><td>'+data[i][3]+'</td><td><a class="positionMsg" data-name="'+data[i][0]+'">地图</a></td><td><div class="operate"><a>操作<span class="caret"></span></a><span></span><ul><li><a class="driverEditor" data-toggle="modal" data-target="#driverEditor">编辑</a></li><li><a class="deleteDriver"  data-toggle="modal" data-target="#deleteDriver" >删除</a></li></ul></div></td></tr>';
             }
             $('.tab_box tbody').html(html);//将数据加载到页面
         }
@@ -31,24 +30,23 @@ $(function () {
             url:"/json/cat/query/",
             success:function (data) {
                 data=jQuery.parseJSON(data).body;
-                console.log(data);
                 var html="";
                 for(var i=0;i<data.length;i++) {
                     var a = i + 1;
                     if (plateNum == data[i][3]&&fullName==""&&phoneNumber=="") {
-                        html+='<tr><td>'+a+'</td><td><img src="'+data[i][4]+'" alt="" style="width: 20px;height: 20px"></td><td>'+data[i][0]+'</td><td>'+data[i][1]+'</td><td>'+data[i][2]+'</td><td>'+data[i][3]+'</td><td><a class="positionMsg" data-name="'+data[i][0]+'">地图</a></td></tr>';
+                        html+='<tr><td>'+a+'</td><td><img src="'+data[i][4]+'" alt="" style="width: 20px;height: 20px"></td><td>'+data[i][0]+'</td><td>'+data[i][1]+'</td><td>'+data[i][2]+'</td><td>'+data[i][3]+'</td><td><a class="positionMsg" data-name="'+data[i][0]+'">地图</a></td><td><div class="operate"><a>操作<span class="caret"></span></a><span></span><ul><li><a class="driverEditor" data-toggle="modal" data-target="#driverEditor">编辑</a></li><li><a class="deleteDriver"  data-toggle="modal" data-target="#deleteDriver" >删除</a></li></ul></div></td></tr>';
                     }else if (fullName == data[i][0]&&plateNum==""&&phoneNumber=="") {
-                        html+='<tr><td>'+a+'</td><td><img src="'+data[i][4]+'" alt="" style="width: 20px;height: 20px"></td><td>'+data[i][0]+'</td><td>'+data[i][1]+'</td><td>'+data[i][2]+'</td><td>'+data[i][3]+'</td><td><a class="positionMsg" data-name="'+data[i][0]+'">地图</a></td></tr>';
+                        html+='<tr><td>'+a+'</td><td><img src="'+data[i][4]+'" alt="" style="width: 20px;height: 20px"></td><td>'+data[i][0]+'</td><td>'+data[i][1]+'</td><td>'+data[i][2]+'</td><td>'+data[i][3]+'</td><td><a class="positionMsg" data-name="'+data[i][0]+'">地图</a></td><td><div class="operate"><a>操作<span class="caret"></span></a><span></span><ul><li><a class="driverEditor" data-toggle="modal" data-target="#driverEditor">编辑</a></li><li><a class="deleteDriver"  data-toggle="modal" data-target="#deleteDriver" >删除</a></li></ul></div></td></tr>';
                     }else if (phoneNumber == data[i][2]&&plateNum==""&&fullName=="") {
-                        html+='<tr><td>'+a+'</td><td><img src="'+data[i][4]+'" alt="" style="width: 20px;height: 20px"></td><td>'+data[i][0]+'</td><td>'+data[i][1]+'</td><td>'+data[i][2]+'</td><td>'+data[i][3]+'</td><td><a class="positionMsg" data-name="'+data[i][0]+'">地图</a></td></tr>';
+                        html+='<tr><td>'+a+'</td><td><img src="'+data[i][4]+'" alt="" style="width: 20px;height: 20px"></td><td>'+data[i][0]+'</td><td>'+data[i][1]+'</td><td>'+data[i][2]+'</td><td>'+data[i][3]+'</td><td><a class="positionMsg" data-name="'+data[i][0]+'">地图</a></td><td><div class="operate"><a>操作<span class="caret"></span></a><span></span><ul><li><a class="driverEditor" data-toggle="modal" data-target="#driverEditor">编辑</a></li><li><a class="deleteDriver"  data-toggle="modal" data-target="#deleteDriver" >删除</a></li></ul></div></td>/tr>';
                     }else if (fullName == data[i][0] &&plateNum == data[i][3]) {
-                        html+='<tr><td>'+a+'</td><td><img src="'+data[i][4]+'" alt="" style="width: 20px;height: 20px"></td><td>'+data[i][0]+'</td><td>'+data[i][1]+'</td><td>'+data[i][2]+'</td><td>'+data[i][3]+'</td><td><a class="positionMsg" data-name="'+data[i][0]+'">地图</a></td></tr>';
+                        html+='<tr><td>'+a+'</td><td><img src="'+data[i][4]+'" alt="" style="width: 20px;height: 20px"></td><td>'+data[i][0]+'</td><td>'+data[i][1]+'</td><td>'+data[i][2]+'</td><td>'+data[i][3]+'</td><td><a class="positionMsg" data-name="'+data[i][0]+'">地图</a></td><td><div class="operate"><a>操作<span class="caret"></span></a><span></span><ul><li><a class="driverEditor" data-toggle="modal" data-target="#driverEditor">编辑</a></li><li><a class="deleteDriver"  data-toggle="modal" data-target="#deleteDriver" >删除</a></li></ul></div></td></tr>';
                     }else if (plateNum == data[i][3]&& phoneNumber == data[i][2]) {
-                        html+='<tr><td>'+a+'</td><td><img src="'+data[i][4]+'" alt="" style="width: 20px;height: 20px"></td><td>'+data[i][0]+'</td><td>'+data[i][1]+'</td><td>'+data[i][2]+'</td><td>'+data[i][3]+'</td><td><a class="positionMsg" data-name="'+data[i][0]+'">地图</a></td></tr>';
+                        html+='<tr><td>'+a+'</td><td><img src="'+data[i][4]+'" alt="" style="width: 20px;height: 20px"></td><td>'+data[i][0]+'</td><td>'+data[i][1]+'</td><td>'+data[i][2]+'</td><td>'+data[i][3]+'</td><td><a class="positionMsg" data-name="'+data[i][0]+'">地图</a></td><td><div class="operate"><a>操作<span class="caret"></span></a><span></span><ul><li><a class="driverEditor" data-toggle="modal" data-target="#driverEditor">编辑</a></li><li><a class="deleteDriver"  data-toggle="modal" data-target="#deleteDriver" >删除</a></li></ul></div></td></tr>';
                     }else if (fullName == data[i][0] && phoneNumber == data[i][2]) {
-                        html+='<tr><td>'+a+'</td><td><img src="'+data[i][4]+'" alt="" style="width: 20px;height: 20px"></td><td>'+data[i][0]+'</td><td>'+data[i][1]+'</td><td>'+data[i][2]+'</td><td>'+data[i][3]+'</td><td><a class="positionMsg" data-name="'+data[i][0]+'">地图</a></td></tr>';
+                        html+='<tr><td>'+a+'</td><td><img src="'+data[i][4]+'" alt="" style="width: 20px;height: 20px"></td><td>'+data[i][0]+'</td><td>'+data[i][1]+'</td><td>'+data[i][2]+'</td><td>'+data[i][3]+'</td><td><a class="positionMsg" data-name="'+data[i][0]+'">地图</a></td><td><div class="operate"><a>操作<span class="caret"></span></a><span></span><ul><li><a class="driverEditor" data-toggle="modal" data-target="#driverEditor">编辑</a></li><li><a class="deleteDriver"  data-toggle="modal" data-target="#deleteDriver" >删除</a></li></ul></div></td></tr>';
                     }else if (fullName == data[i][0] && phoneNumber == data[i][2]&&plateNum == data[i][3]) {
-                        html+='<tr><td>'+a+'</td><td><img src="'+data[i][4]+'" alt="" style="width: 20px;height: 20px"></td><td>'+data[i][0]+'</td><td>'+data[i][1]+'</td><td>'+data[i][2]+'</td><td>'+data[i][3]+'</td><td><a class="positionMsg" data-name="'+data[i][0]+'">地图</a></td></tr>';
+                        html+='<tr><td>'+a+'</td><td><img src="'+data[i][4]+'" alt="" style="width: 20px;height: 20px"></td><td>'+data[i][0]+'</td><td>'+data[i][1]+'</td><td>'+data[i][2]+'</td><td>'+data[i][3]+'</td><td><a class="positionMsg" data-name="'+data[i][0]+'">地图</a></td><td><div class="operate"><a>操作<span class="caret"></span></a><span></span><ul><li><a class="driverEditor" data-toggle="modal" data-target="#driverEditor">编辑</a></li><li><a class="deleteDriver"  data-toggle="modal" data-target="#deleteDriver" >删除</a></li></ul></div></td></tr>';
                     }
 
                 }
@@ -56,7 +54,7 @@ $(function () {
             }
         });
     });
-    //点击地图显示运货轨迹
+    //点击地图显示运货轨迹var com
     $('.tab_box tbody').on("click",".positionMsg",function () {
         $("#positionMsg").css("display","block");
         var name=$(this).attr("data-name");
@@ -68,8 +66,6 @@ $(function () {
                 data=jQuery.parseJSON(data).body;
                 var map = new BMap.Map("map");
                if(data[data.length-1]!==undefined){
-                   console.log(parseFloat(data[data.length-1][1]));
-                   console.log(parseFloat(data[data.length-1][0]));
                    var one = wgs_gcj_encrypts(parseFloat(data[data.length-1][1]),parseFloat(data[data.length-1][0]));
                    var one2 = google_bd_encrypt(one.lat,one.lon);
                    var point = new BMap.Point(one2.lon,one2.lat);
@@ -115,38 +111,38 @@ $(function () {
             $("#positionMsg").css("display","none");
         })
     });
-    /*//功能2：添加车辆t
+    //功能2：添加车辆t
     $("#addCat").click(function (e) {
         e.preventDefault();
         $("div.modal").attr("id","addDriver");
         $("div.modal h4").text("添加车辆");
-        $("div.modal .add").replaceWith('<div class="add"><div class="form-group"><label>车型</label><input type="text" name="catType"/></div><div class="form-group"><label>车牌号</label><input type="text" name="plateNum"/></div><div class="form-group"><label>姓名</label><input type="text" name="fullName"/></div><div class="form-group"><label>电话</label><input type="text" name="phoneNumber"/></div><div class="form-group"><label>车况备注</label><input type="text" name="catOther"/></div><div class="form-group"><label>常运路线</label><input type="text" name="ofterPlace"/></div></div>');
+        $("div.modal .add").replaceWith('<div class="add"><div class="form-group"><label>用户ID</label><input type="text" name="userid" placeholder="请填写姓名全拼"/></div><div class="form-group"><label>姓名</label><input type="text" name="fullName"/></div><div class="form-group"><label>车牌号</label><input type="text" name="plateNum"/></div><div class="form-group"><label>电话</label><input type="text" name="phoneNumber"/></div></div>');
         confirm.unbind('click');
         confirm.click(function () {
             var plateNum = $("[name=plateNum]").val();
-            var catType = $("[name=catType]").val();
             var fullName = $("[name=fullName]").val();
             var phoneNumber = $("[name=phoneNumber]").val();
-            var catOther = $("[name=catOther]").val();
-            var ofterPlace = $("[name=ofterPlace]").val();
+            var userid=$("[name=userid]").val();
             $.ajax({
                 type: "post",
                 url: "/json/cat/create/",
                 data: {
-                    plateNum: plateNum,
-                    catType: catType,
-                    fullName: fullName,
-                    phoneNumber: phoneNumber,
-                    catOther: catOther,
-                    ofterPlace: ofterPlace
+                    cat: plateNum,
+                    name: fullName,
+                    mobile: phoneNumber,
+                    userid:userid
                 },
-                success: function () {
+                success: function (data) {
+                    data=jQuery.parseJSON(data).body;
                     promptBox();
-                    if (plateNum && catType && fullName && phoneNumber && catOther && ofterPlace !== "") {
+                    if (data.errcode==0) {
                         $("#promptBox").text("创建成功");
                         warningClass();
-                    } else {
-                        $("#promptBox").text("当前表单不能有空项");
+                    } else if(data.errcode==60102){
+                        $("#promptBox").text("用户ID已存在");
+                        $("#promptBox").addClass("warning");
+                    } else if(data.errcode==60104){
+                        $("#promptBox").text("手机号码已存在");
                         $("#promptBox").addClass("warning");
                     }
                     driver();
@@ -154,35 +150,30 @@ $(function () {
                 }
             });
         });
-    });*/
-    /*//功能3：编辑车辆信息
+    });
+   //功能3：编辑车辆信息
+    var confirm=$(".confirm");
     $(".tab_box tbody").on("click",".driverEditor",function (e) {
         e.preventDefault();
         $(".modal").attr("id","driverEditor");
         $(".modal h4").text("编辑车辆");
-        $("div.modal .add").replaceWith('<div class="add"><div class="form-group"><label>车型</label><input type="text" name="catType"/></div><div class="form-group"><label>车牌号</label><input type="text" name="plateNum"/></div><div class="form-group"><label>姓名</label><input type="text" name="fullName"/></div><div class="form-group"><label>电话</label><input type="text" name="phoneNumber"/></div><div class="form-group"><label>车况备注</label><input type="text" name="catOther"/></div><div class="form-group"><label>常运路线</label><input type="text" name="ofterPlace"/></div></div>');
+        $("div.modal .add").replaceWith('<div class="add"><div class="form-group"><label>姓名</label><input type="text" name="fullName" disabled="disabled" style="color:#888;"></div><div class="form-group"><label>车牌号</label><input type="text" name="plateNum"/></div><div class="form-group"><label>电话</label><input type="text" name="phoneNumber"/></div></div>');
         var index = $(this).parents("tr").attr("data-id");
         confirm.attr("data-index", index);//确定键添加data-index属性，
-        $("[name=catType]").val($(this).parents("tr").children("td:nth-child(2)").text());
-        $("[name=plateNum]").val($(this).parents("tr").children("td:nth-child(3)").text());
-        $("[name=fullName]").val($(this).parents("tr").children("td:nth-child(4)").text());
+        $("[name=plateNum]").val($(this).parents("tr").children("td:nth-child(6)").text());
         $("[name=phoneNumber]").val($(this).parents("tr").children("td:nth-child(5)").text());
-        $("[name=catOther]").val($(this).parents("tr").children("td:nth-child(6)").text());
-        $("[name=ofterPlace]").val($(this).parents("tr").children("td:nth-child(7)").text());
+        $("[name=fullName]").val($(this).parents("tr").children("td:nth-child(3)").text());
         confirm.unbind('click');
         confirm.click(function () {
             var plateNum = $("[name=plateNum]").val();
-            var catType = $("[name=catType]").val();
-            var fullName = $("[name=fullName]").val();
             var phoneNumber = $("[name=phoneNumber]").val();
-            var catOther = $("[name=catOther]").val();
-            var ofterPlace = $("[name=ofterPlace]").val();
-            var id = $(this).attr("data-index");
+            var name = $("[name=fullName]").val();
+            var id= $(this).attr("data-index");
             $.ajax({
                 type: "post",
                 url: "/json/cat/update/",
                 dataType: "json",
-                data: {id: id,plateNum: plateNum,catType: catType,fullName: fullName,phoneNumber: phoneNumber,catOther: catOther,ofterPlace: ofterPlace},//将id传给后台数据
+                data: {userid: id,cat: plateNum,mobile: phoneNumber,name:name},//将id传给后台数据
                 success: function () {
                     $("#promptBox").text("修改成功");
                     warningClass();
@@ -194,22 +185,22 @@ $(function () {
         });
 
     });
-    //功能4：删除车辆的模态框
+   //功能4：删除车辆的模态框
     $(".tab_box tbody").on("click",".deleteDriver",function (e) {
         e.preventDefault();
-        $("div.modal").attr("id", "delete_driver");
-        $("div.modal h4").text("删除客户");
-        $("div.modal .add").replaceWith("<div class='add'><p>是否删除此客户？</p></div>");
+        $("div.modal").attr("id", "deleteDriver");
+        $("div.modal h4").text("删除车辆");
+        $("div.modal .add").replaceWith("<div class='add'><p>是否删除此车辆？</p></div>");
         var index = $(this).parents("tr").attr("data-id");
         confirm.attr("data-index", index);//确定键添加data-index属性，
         confirm.unbind('click');
         confirm.click(function () {
-            var id = $(this).attr("data-index");
+            var id= $(this).attr("data-index");
             $.ajax({
-                type: "post",
+                type: "get",
                 url: "/json/cat/delete/",
                 dataType: "json",
-                data: {id: id},//将id传给后台数据
+                data: {userid: id},//将id传给后台数据
                 success: function () {
                     $("#promptBox").text("删除成功");
                     warningClass();
@@ -219,5 +210,5 @@ $(function () {
                 }
             });
         });
-    });*/
+    });
 });

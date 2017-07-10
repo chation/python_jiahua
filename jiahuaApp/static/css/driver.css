@@ -36,12 +36,12 @@
     border: 1px solid #ccc;
     color:#666;
 }
-.tab_nav .form-group>a#catSearch,.tab_nav .form-group>a.add{
+.tab_nav .form-group>a#catSearch,.tab_nav .form-group>a#addCat{
     background: #2e8fea;
     color:#fff;
     margin-right: 20px;
 }
-.tab_nav .form-group>a#catSearch:hover,.tab_nav .form-group>a.add:hover{
+.tab_nav .form-group>a#catSearch:hover,.tab_nav .form-group>a#addCat:hover{
     background: #3198f8;
 }
 /*添加司机*/

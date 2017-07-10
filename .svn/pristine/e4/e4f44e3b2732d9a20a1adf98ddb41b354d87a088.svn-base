@@ -163,7 +163,6 @@ $(function () {
         $("[name=plateNum]").val($(this).parents("tr").children("td:nth-child(6)").text());
         $("[name=phoneNumber]").val($(this).parents("tr").children("td:nth-child(5)").text());
         $("[name=fullName]").val($(this).parents("tr").children("td:nth-child(3)").text());
-        confirm.unbind('click');
         confirm.click(function () {
             var plateNum = $("[name=plateNum]").val();
             var phoneNumber = $("[name=phoneNumber]").val();
@@ -193,7 +192,6 @@ $(function () {
         $("div.modal .add").replaceWith("<div class='add'><p>是否删除此车辆？</p></div>");
         var index = $(this).parents("tr").attr("data-id");
         confirm.attr("data-index", index);//确定键添加data-index属性，
-        confirm.unbind('click');
         confirm.click(function () {
             var id= $(this).attr("data-index");
             $.ajax({

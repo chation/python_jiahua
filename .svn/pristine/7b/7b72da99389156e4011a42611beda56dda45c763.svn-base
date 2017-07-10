@@ -113,6 +113,7 @@ class Driver(Person):
 
     #添加车辆信息
     def add_driver(self,data):
+        print data
         result = self.person.add_part_person(data)
         return result
 

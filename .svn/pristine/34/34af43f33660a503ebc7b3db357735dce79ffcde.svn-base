@@ -90,6 +90,8 @@ class WechatRequest(object):
         '''
         params = {"access_token":self.__activeConf.access_token}
         data = json.dumps(data)
+        print data
+        print params
         response = requests.post(url,data=data,params=params)
         return response.json()
     

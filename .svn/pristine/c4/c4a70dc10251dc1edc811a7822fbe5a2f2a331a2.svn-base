@@ -36,12 +36,12 @@
     border: 1px solid #ccc;
     color:#666;
 }
-.tab_nav .form-group>a#catSearch,.tab_nav .form-group>a#addCat{
+.tab_nav .form-group>a#catSearch,.tab_nav .form-group>a.add{
     background: #2e8fea;
     color:#fff;
     margin-right: 20px;
 }
-.tab_nav .form-group>a#catSearch:hover,.tab_nav .form-group>a#addCat:hover{
+.tab_nav .form-group>a#catSearch:hover,.tab_nav .form-group>a.add:hover{
     background: #3198f8;
 }
 /*添加司机*/
@@ -52,14 +52,14 @@
     line-height: 30px;
 }
 /*位置信息*/
-.positionMsg{
+.positionMsg,.driverEditor{
     padding: 0 5px;
     height: 25px;
     background: #2e8fea;
     color: #fff;
     border-radius: 3px;
 }
-.positionMsg:hover{
+.positionMsg:hover,.driverEditor:hover{
     color: #fff;
 }
 /*位置信息模态框*/

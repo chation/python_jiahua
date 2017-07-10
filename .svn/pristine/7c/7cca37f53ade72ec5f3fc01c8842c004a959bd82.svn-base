@@ -7,12 +7,7 @@ class Person(object):
         self.__requests = WechatRequest() 
         self.data = None
     
-    #获取部门列表
-    def get_department_list(self):
-        url = "https://qyapi.weixin.qq.com/cgi-bin/department/list"
-        self.data = self.__requests.get(url)
-        return self.data
-
+    
     #获取成员
     def get_part(self,userid):
         #userid:成员UserID。对应管理端的帐号,必须键
@@ -41,22 +36,11 @@ class Person(object):
         self.data = self.__requests.get(url,params)
         return self.data["userlist"]
 
-    #添加成员
-    def add_part_person(self,params):
-        url = "https://qyapi.weixin.qq.com/cgi-bin/user/create"
-        self.data = self.__requests.post(url,params)
-        return  self.data
-
     #编辑部门成员信息
     def edit_part_person(self,params):
         url = "https://qyapi.weixin.qq.com/cgi-bin/user/update"
         self.data = self.__requests.post(url,params)
-        return self.data
-
-    #删除部门成员
-    def del_part_person(self,params):
-        url = "https://qyapi.weixin.qq.com/cgi-bin/user/delete"
-        self.data = self.__requests.get(url,params)
+        print self.data
         return self.data
 
     

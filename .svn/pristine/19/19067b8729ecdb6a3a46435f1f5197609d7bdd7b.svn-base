@@ -89,7 +89,9 @@ class WechatRequest(object):
         :return: 微信服务器响应的JSON数据
         '''
         params = {"access_token":self.__activeConf.access_token}
-        data = json.dumps(data)
+        data = json.dumps(data,encoding="utf-8",ensure_ascii=False)
+        print params
+        print data
         response = requests.post(url,data=data,params=params)
         return response.json()
     

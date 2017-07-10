@@ -2,17 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cd5fda1d-ef3d-4368-82a0-23fc511d697f" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/jiahuaApp/.idea/.name" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/jiahuaApp/.idea/jiahuaApp.iml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/jiahuaApp/.idea/misc.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/jiahuaApp/.idea/modules.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/jiahuaApp/.idea/vcs.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/jiahuaApp/.idea/workspace.xml" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jiahuaApp/jsonUrls.py" afterPath="$PROJECT_DIR$/jiahuaApp/jsonUrls.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jiahuaApp/jsonViews.py" afterPath="$PROJECT_DIR$/jiahuaApp/jsonViews.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jiahuaApp/static/css/driver.css" afterPath="$PROJECT_DIR$/jiahuaApp/static/css/driver.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jiahuaApp/static/js/driver.js" afterPath="$PROJECT_DIR$/jiahuaApp/static/js/driver.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jiahuaApp/static/js/order.js" afterPath="$PROJECT_DIR$/jiahuaApp/static/js/order.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jiahuaApp/templates/jiahuaApp/orderManage.html" afterPath="$PROJECT_DIR$/jiahuaApp/templates/jiahuaApp/orderManage.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jiahuaApp/wechatLib/config.py" afterPath="$PROJECT_DIR$/jiahuaApp/wechatLib/config.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jiahuaApp/templates/jiahuaApp/driver.html" afterPath="$PROJECT_DIR$/jiahuaApp/templates/jiahuaApp/driver.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jiahuaApp/wechat/person.py" afterPath="$PROJECT_DIR$/jiahuaApp/wechat/person.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jiahuaApp/wechatLib/application/person.py" afterPath="$PROJECT_DIR$/jiahuaApp/wechatLib/application/person.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jiahuaApp/wechatLib/lib/request.py" afterPath="$PROJECT_DIR$/jiahuaApp/wechatLib/lib/request.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/css/driver.css" afterPath="$PROJECT_DIR$/static/css/driver.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/js/driver.js" afterPath="$PROJECT_DIR$/static/js/driver.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/js/order.js" afterPath="$PROJECT_DIR$/static/js/order.js" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -42,30 +43,18 @@
       <file leaf-file-name="jsonUrls.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/jiahuaApp/jsonUrls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="230">
-              <caret line="19" column="41" lean-forward="true" selection-start-line="19" selection-start-column="41" selection-end-line="19" selection-end-column="41" />
+            <state relative-caret-position="345">
+              <caret line="27" column="4" lean-forward="true" selection-start-line="27" selection-start-column="4" selection-end-line="27" selection-end-column="4" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/jiahuaApp/views.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-441">
-              <caret line="97" column="32" lean-forward="false" selection-start-line="97" selection-start-column="32" selection-end-line="97" selection-end-column="32" />
-              <folding>
-                <element signature="e#14#49#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="jsonViews.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="jsonViews.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/jiahuaApp/jsonViews.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="545">
-              <caret line="401" column="0" lean-forward="true" selection-start-line="401" selection-start-column="0" selection-end-line="401" selection-end-column="0" />
+            <state relative-caret-position="486">
+              <caret line="190" column="23" lean-forward="true" selection-start-line="190" selection-start-column="23" selection-end-line="190" selection-end-column="23" />
               <folding>
                 <element signature="e#14#49#0" expanded="true" />
               </folding>
@@ -76,9 +65,11 @@
       <file leaf-file-name="person.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/jiahuaApp/wechat/person.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-552">
-              <caret line="93" column="36" lean-forward="true" selection-start-line="93" selection-start-column="36" selection-end-line="93" selection-end-column="36" />
-              <folding />
+            <state relative-caret-position="207">
+              <caret line="9" column="0" lean-forward="true" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+              <folding>
+                <element signature="e#15#64#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -86,48 +77,19 @@
       <file leaf-file-name="person.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/jiahuaApp/wechatLib/application/person.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="299">
-              <caret line="31" column="75" lean-forward="true" selection-start-line="31" selection-start-column="75" selection-end-line="31" selection-end-column="75" />
+            <state relative-caret-position="-795">
+              <caret line="6" column="13" lean-forward="false" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="models.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/jiahuaApp/models.py">
+      <file leaf-file-name="request.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/jiahuaApp/wechatLib/lib/request.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2349">
-              <caret line="136" column="6" lean-forward="false" selection-start-line="136" selection-start-column="6" selection-end-line="136" selection-end-column="6" />
+            <state relative-caret-position="371">
+              <caret line="91" column="31" lean-forward="false" selection-start-line="91" selection-start-column="31" selection-end-line="91" selection-end-column="31" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="driver.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/jiahuaApp/templates/jiahuaApp/driver.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="253">
-              <caret line="11" column="46" lean-forward="false" selection-start-line="11" selection-start-column="46" selection-end-line="11" selection-end-column="46" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="driver.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/jiahuaApp/static/js/driver.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="161">
-              <caret line="7" column="30" lean-forward="false" selection-start-line="7" selection-start-column="30" selection-end-line="7" selection-end-column="30" />
-              <folding>
-                <marker date="1499415301819" expanded="true" signature="410:434" ph="..." />
-                <marker date="1499415301819" expanded="true" signature="1502:1526" ph="..." />
-                <marker date="1499415301819" expanded="true" signature="1878:1902" ph="..." />
-                <marker date="1499415301819" expanded="true" signature="2254:2278" ph="..." />
-                <marker date="1499415301819" expanded="true" signature="2624:2648" ph="..." />
-                <marker date="1499415301819" expanded="true" signature="2997:3021" ph="..." />
-                <marker date="1499415301819" expanded="true" signature="3371:3395" ph="..." />
-                <marker date="1499415301819" expanded="true" signature="3769:3793" ph="..." />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -144,36 +106,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>de</find>
-      <find>default_list()</find>
-      <find>tlist()</find>
-      <find>add_tr</find>
-      <find>orderManage()</find>
-      <find>getGoodsSearch</find>
-      <find>btnGroup</find>
-      <find>def</find>
-      <find>name</find>
-      <find>ge</find>
-      <find>get</find>
-      <find>getc</find>
-      <find>getca</find>
-      <find>getcar</find>
-      <find>getcarlist()</find>
-      <find>unique</find>
-      <find>total()</find>
-      <find>ordermanage</find>
-      <find>$(&quot;#order&quot;).addClass(&quot;active&quot;)</find>
-      <find>.pendingList</find>
-      <find>startTime</find>
-      <find>pendingList</find>
-      <find>动态生成线性图</find>
-      <find>getd</find>
-      <find>cat/update</find>
-      <find>duapp.com</find>
       <find>'</find>
       <find>d</find>
-      <find>duapp</find>
       <find>arr_catdata</find>
+      <find>duapp</find>
+      <find>co</find>
+      <find>con</find>
+      <find>cons</find>
+      <find>conso</find>
+      <find>consol</find>
+      <find>console</find>
+      <find>console.</find>
+      <find>console.l</find>
+      <find>console.lo</find>
+      <find>location</find>
+      <find>console.log</find>
+      <find>= []</find>
+      <find>#</find>
+      <find>#p</find>
+      <find>#pi</find>
+      <find>#piloa</find>
+      <find>#pilo</find>
+      <find>#pil</find>
+      <find>#pilia</find>
+      <find>#piliang</find>
+      <find>#piliangd</find>
+      <find>#piliangda</find>
+      <find>#piliangdaop</find>
+      <find>#piliangdao</find>
+      <find>#piliangdaoru</find>
+      <find>#批量导入</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -191,7 +153,10 @@
         <option value="$PROJECT_DIR$/jiahuaApp/templates/jiahuaApp/orderManage.html" />
         <option value="$PROJECT_DIR$/jiahuaApp/static/js/order.js" />
         <option value="$PROJECT_DIR$/jiahuaApp/static/js/driver.js" />
+        <option value="$PROJECT_DIR$/jiahuaApp/jsonUrls.py" />
+        <option value="$PROJECT_DIR$/jiahuaApp/wechatLib/application/person.py" />
         <option value="$PROJECT_DIR$/jiahuaApp/jsonViews.py" />
+        <option value="$PROJECT_DIR$/jiahuaApp/wechatLib/lib/request.py" />
         <option value="$PROJECT_DIR$/jiahuaApp/wechat/person.py" />
       </list>
     </option>
@@ -249,6 +214,46 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="jiahuaApp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="jiahua_pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="jiahua_pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="jiahuaApp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="wechatLib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="jiahua_pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="jiahua_pro" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="jiahuaApp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="wechatLib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="lib" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -567,77 +572,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/jiahuaApp/commonLib.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
-          <caret line="10" column="5" lean-forward="false" selection-start-line="10" selection-start-column="5" selection-end-line="10" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/jiahuaApp/jsonViews.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3243">
-          <caret line="160" column="39" lean-forward="false" selection-start-line="160" selection-start-column="39" selection-end-line="160" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/jiahuaApp/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="115">
-          <caret line="5" column="5" lean-forward="false" selection-start-line="5" selection-start-column="5" selection-end-line="5" selection-end-column="5" />
-          <folding>
-            <element signature="e#14#49#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/requirements.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="14" lean-forward="true" selection-start-line="0" selection-start-column="14" selection-end-line="0" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/manage.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
-          <caret line="20" column="13" lean-forward="false" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/jiahuaApp/commonLib.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
-          <caret line="10" column="5" lean-forward="false" selection-start-line="10" selection-start-column="5" selection-end-line="10" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/jiahuaApp/jsonViews.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3243">
-          <caret line="160" column="39" lean-forward="false" selection-start-line="160" selection-start-column="39" selection-end-line="160" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/jiahuaApp/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="115">
-          <caret line="5" column="5" lean-forward="false" selection-start-line="5" selection-start-column="5" selection-end-line="5" selection-end-column="5" />
-          <folding>
-            <element signature="e#14#49#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/requirements.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="14" lean-forward="false" selection-start-line="0" selection-start-column="14" selection-end-line="0" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/jiahuaApp/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -673,28 +607,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/jiahuaApp/middleware.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
-          <caret line="14" column="52" lean-forward="false" selection-start-line="14" selection-start-column="52" selection-end-line="14" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/Program Files/Python36/Lib/site-packages/django/contrib/auth/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="269">
           <caret line="61" column="4" lean-forward="false" selection-start-line="61" selection-start-column="4" selection-end-line="61" selection-end-column="4" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/jiahuaApp/accountView.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1196">
-          <caret line="57" column="0" lean-forward="false" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
-          <folding>
-            <element signature="e#14#57#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -716,6 +633,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="756">
           <caret line="8472" column="0" lean-forward="false" selection-start-line="8472" selection-start-column="0" selection-end-line="8472" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -723,14 +641,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/jiahuaApp/commonLib.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="161">
-          <caret line="15" column="76" lean-forward="true" selection-start-line="15" selection-start-column="76" selection-end-line="15" selection-end-column="76" />
           <folding />
         </state>
       </provider>
@@ -801,16 +711,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/jiahuaApp/forms.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="276">
-          <caret line="12" column="25" lean-forward="false" selection-start-line="12" selection-start-column="25" selection-end-line="12" selection-end-column="25" />
-          <folding>
-            <element signature="e#15#45#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/jiahuaApp/templates/jiahuaApp/uploadFile.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="322">
@@ -852,14 +752,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/jiahuaApp/wechatLib/config.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
-          <caret line="9" column="0" lean-forward="true" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/jiahuaApp/templates/jiahuaApp/orderManage.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="477">
@@ -872,33 +764,8 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="253">
           <caret line="11" column="46" lean-forward="false" selection-start-line="11" selection-start-column="46" selection-end-line="11" selection-end-column="46" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/jiahuaApp/static/js/driver.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="161">
-          <caret line="7" column="30" lean-forward="false" selection-start-line="7" selection-start-column="30" selection-end-line="7" selection-end-column="30" />
           <folding>
-            <marker date="1499415301819" expanded="true" signature="410:434" ph="..." />
-            <marker date="1499415301819" expanded="true" signature="1502:1526" ph="..." />
-            <marker date="1499415301819" expanded="true" signature="1878:1902" ph="..." />
-            <marker date="1499415301819" expanded="true" signature="2254:2278" ph="..." />
-            <marker date="1499415301819" expanded="true" signature="2624:2648" ph="..." />
-            <marker date="1499415301819" expanded="true" signature="2997:3021" ph="..." />
-            <marker date="1499415301819" expanded="true" signature="3371:3395" ph="..." />
-            <marker date="1499415301819" expanded="true" signature="3769:3793" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/jiahua/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-220">
-          <caret line="31" column="58" lean-forward="true" selection-start-line="31" selection-start-column="58" selection-end-line="31" selection-end-column="58" />
-          <folding>
-            <element signature="e#654#695#0" expanded="true" />
+            <marker date="1499674062337" expanded="true" signature="1334:1355" ph="..." />
           </folding>
         </state>
       </provider>
@@ -943,9 +810,145 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/jiahuaApp/wechat/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/jiahuaApp/wechatLib/conf.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-184">
+          <caret line="1" column="0" lean-forward="true" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+          <folding>
+            <element signature="e#14#55#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/jiahuaApp/wechatLib/config.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="9" column="0" lean-forward="true" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Program Files/Python36/Lib/site-packages/requests/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-828">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/jiahua/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-82">
+          <caret line="31" column="58" lean-forward="true" selection-start-line="31" selection-start-column="58" selection-end-line="31" selection-end-column="58" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/jiahuaApp/commonLib.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="161">
+          <caret line="15" column="76" lean-forward="true" selection-start-line="15" selection-start-column="76" selection-end-line="15" selection-end-column="76" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/jiahuaApp/accountView.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-542">
+          <caret line="57" column="0" lean-forward="false" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/jiahuaApp/apps.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/jiahuaApp/callbackViews.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/jiahuaApp/middleware.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="299">
+          <caret line="14" column="52" lean-forward="false" selection-start-line="14" selection-start-column="52" selection-end-line="14" selection-end-column="52" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Program Files/Python36/Lib/site-packages/django/db/models/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#27#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/jiahuaApp/static/js/driver.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1587">
+          <caret line="12" column="13" lean-forward="true" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+          <folding>
+            <marker date="1499678450950" expanded="true" signature="404:428" ph="..." />
+            <marker date="1499678450950" expanded="true" signature="1548:1572" ph="..." />
+            <marker date="1499678450950" expanded="true" signature="2011:2035" ph="..." />
+            <marker date="1499678450950" expanded="true" signature="2474:2498" ph="..." />
+            <marker date="1499678450950" expanded="true" signature="2931:2955" ph="..." />
+            <marker date="1499678450950" expanded="true" signature="3391:3415" ph="..." />
+            <marker date="1499678450950" expanded="true" signature="3852:3876" ph="..." />
+            <marker date="1499678450950" expanded="true" signature="4337:4361" ph="..." />
+            <marker date="1499678450950" expanded="true" signature="9754:9765" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/jiahuaApp/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3772">
+          <caret line="166" column="33" lean-forward="true" selection-start-line="166" selection-start-column="33" selection-end-line="166" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/jiahuaApp/tests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/jiahuaApp/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="253">
+          <caret line="12" column="22" lean-forward="false" selection-start-line="12" selection-start-column="22" selection-end-line="12" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/jiahuaApp/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-441">
+        <state relative-caret-position="1886">
           <caret line="97" column="32" lean-forward="false" selection-start-line="97" selection-start-column="32" selection-end-line="97" selection-end-column="32" />
           <folding>
             <element signature="e#14#49#0" expanded="true" />
@@ -953,45 +956,55 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/jiahuaApp/jsonUrls.py">
+    <entry file="file://C:/Program Files/Python36/Lib/site-packages/requests/api.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
-          <caret line="19" column="41" lean-forward="true" selection-start-line="19" selection-start-column="41" selection-end-line="19" selection-end-column="41" />
+        <state relative-caret-position="207">
+          <caret line="96" column="4" lean-forward="false" selection-start-line="96" selection-start-column="4" selection-end-line="96" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/jiahuaApp/wechatLib/lib/request.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="371">
+          <caret line="91" column="31" lean-forward="false" selection-start-line="91" selection-start-column="31" selection-end-line="91" selection-end-column="31" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/jiahuaApp/wechatLib/application/person.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
-          <caret line="31" column="75" lean-forward="true" selection-start-line="31" selection-start-column="75" selection-end-line="31" selection-end-column="75" />
+        <state relative-caret-position="-795">
+          <caret line="6" column="13" lean-forward="false" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/jiahuaApp/wechat/person.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="9" column="0" lean-forward="true" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+          <folding>
+            <element signature="e#15#64#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/jiahuaApp/jsonUrls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="27" column="4" lean-forward="true" selection-start-line="27" selection-start-column="4" selection-end-line="27" selection-end-column="4" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/jiahuaApp/jsonViews.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="545">
-          <caret line="401" column="0" lean-forward="true" selection-start-line="401" selection-start-column="0" selection-end-line="401" selection-end-column="0" />
+        <state relative-caret-position="486">
+          <caret line="190" column="23" lean-forward="true" selection-start-line="190" selection-start-column="23" selection-end-line="190" selection-end-column="23" />
           <folding>
             <element signature="e#14#49#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/jiahuaApp/wechat/person.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-552">
-          <caret line="93" column="36" lean-forward="true" selection-start-line="93" selection-start-column="36" selection-end-line="93" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/jiahuaApp/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2349">
-          <caret line="136" column="6" lean-forward="false" selection-start-line="136" selection-start-column="6" selection-end-line="136" selection-end-column="6" />
-          <folding />
         </state>
       </provider>
     </entry>

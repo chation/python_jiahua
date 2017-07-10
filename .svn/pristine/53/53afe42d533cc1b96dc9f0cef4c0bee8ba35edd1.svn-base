@@ -103,29 +103,8 @@ class Driver(Person):
                         cat =  v["value"]
             else:
                 cat = ""
-            lists.append([name,weixinid,mobile,cat,tup,userid])
-        return lists
-
-    #获取部门列表
-    def department_list(self):
-        result = self.person.get_department_list()
-        return  result
-
-    #添加车辆信息
-    def add_driver(self,data):
-        result = self.person.add_part_person(data)
-        return result
-
-    #编辑车辆信息
-    def edit_driver(self,data):
-        result = self.person.edit_part_person(data)
-        return result
-
-    #删除车辆
-    def del_driver(self,data):
-        result = self.person.del_part_person(data)
-        return result
-
+            lists.append([userid,name,weixinid,mobile,cat,tup])
+        return lists            
     #获取车牌号对应的订单
     def get_orderId_by_plateNum(self,plateNum,createTime=time.strftime("%Y-%m-%d")):
         orderList = []
