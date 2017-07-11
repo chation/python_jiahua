@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^order/update/$', jsonViews.orderUpdate),#订单修改
     url(r'^order/batchUpdate/$', jsonViews.orderBatchUpdate),#订单批量修改
     url(r'^order/delete/$', jsonViews.orderDelete),#订单删除,发送id键
+    url(r'^order/delbydate/$',jsonViews.deleteOrder),#按日期删除订单
     url(r'^order/count/$', jsonViews.orderCount),#订单统计，发送createTime键
     
     url(r'^order/batch/insert/$', jsonViews.batchCreate),#批处理导入订单

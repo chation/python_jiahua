@@ -355,6 +355,17 @@ def orderCount(request):
 
         return commonLib.statusJson(body=[stateTypeGroup,orderCountGroupList])    
 
+#删除指定日期的订单
+def deleteOrder(request):
+    if request.method == "POST":
+        createTimeList = request.POST.getlist("createTime[]")
+        if createTimeList:
+            orderQuerySet = OrderForm.objects.filter(createTime__range = (createTimeList[0],createTimeList[1]))
+            orderQuerySet.delete()
+            return commonLib.statusJson(status=200,message=u"成功删除！")
+        else:
+            return commonLib.statusJson(status=400,message=u"createTime字段格式有误,正确格式[yyyy-mm-dd]")
+
 #--------------------------------------车辆管理-----------------------------------------------------------------------
 #部门列表
 def departmentList(request):

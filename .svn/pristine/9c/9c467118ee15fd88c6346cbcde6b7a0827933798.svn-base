@@ -1,0 +1,686 @@
+#coding:utf-8
+from django.shortcuts import render
+from django.template import loader, Context
+from django.http import HttpResponse
+from django.http import JsonResponse
+from jiahua.settings import BASE_DIR
+from jiahuaApp.models import *
+from jiahuaApp import commonLib
+from django.core import serializers#把querySet序列化成json模块
+import os
+from jiahuaApp import forms
+from django.core.exceptions import ValidationError
+import time,datetime
+import re
+from django.db.models import Count
+import json
+import logging
+from wechatLib.config import DOMAIN
+#from django.views.decorators.csrf import csrf_exempt#不验证csrf
+
+from wechat.person import Driver
+from django.core.paginator import Paginator
+
+
+#创建订单
+def orderCreate(request):
+    if request.method == "POST":
+        order = OrderForm.create(request.POST)
+        #order.clean_fields()#验证字段数据和类型
+        #order.clean()#验证模型完整性
+        #order.validate_unique()#验证模型唯一性
+        try:
+            order.full_clean()#数据验证
+        except ValidationError as e:
+            return commonLib.statusJson(status=402,message=str(e))
+        
+        order.save()        
+        #data = {'status':200,'message':None,'body':None}
+        #return JsonResponse(data,safe=False)
+        return commonLib.statusJson()
+
+#修改订单
+def orderUpdate(request,notice=True):
+    if request.method == "POST":
+        #验证字段
+        validateResult = commonLib.validateField(request,"id")
+        if not validateResult[0]:
+            return commonLib.statusJson(status=401,message=validateResult[1]) 
+        if not request.POST.get("id").isdigit():#如果id不是数字
+            return commonLib.statusJson(status=401)
+        #查找数据
+        id = int(request.POST.get("id"))
+        oneData = OrderForm.objects.get(id=id)
+        #得到时间
+        createTime = oneData.createTime
+        #更新数据
+        oneData.update(request.POST)
+        oneData.operator = request.user.last_name
+        #如果修改的车次，则要同时修改车牌号
+        newCatNum = request.POST.get("catNum","")
+        oldPlateNum = None
+        newPlateNum = None#新车牌号
+        if newCatNum:
+            #做一个操作记录
+            if oneData.stateType == 4:
+                content = "%s创建的%s车%s趟%s任务清单%s签收的订单修改了车次为%s"%(oneData.createTime,oneData.catNum,oneData.tranNum,oneData.placeNum,oneData.acceptPerson,newCatNum)
+                name = request.user.last_name if request.user.last_name else request.user.username
+                history = History.objects.create(content=content,operator=name,action="修改已签收订单的车次")           
+            #还原订单默认值
+            oneData.receiveFormTime = None
+            oneData.receiveFormPerson = ""
+            oneData.receiveGoodsTime = None
+            oneData.receiveGoodsPerson = ""
+            oneData.acceptTime = None
+            oneData.acceptPerson = ""
+            oneData.other = ""
+            oneData.problem = 0
+            
+            oldPlateNum = oneData.plateNum#旧车牌号
+            
+            if not newCatNum.isdigit():#如果字符串不是整数
+                return commonLib.statusJson(status=402,message=u"车次输入有误")
+            querySet = OrderForm.objects.filter(createTime = oneData.createTime,catNum=int(newCatNum))
+            if querySet.exists():#如果是合并到其他车次
+                nextData = querySet[0]
+                if nextData.stateType != 0:#如果调整成指派过的车次
+                    oneData.plateNum = nextData.plateNum
+                    oneData.stateType = 1
+                    newPlateNum = nextData.plateNum
+                else:#如果合并到其他待处理的车次
+                    oneData.stateType = 0
+                    oneData.plateNum = None                    
+            else:#如果调整为一个新车次
+                oneData.stateType = 0
+                oneData.plateNum = None
+        try:
+            oneData.full_clean()#数据验证
+        except ValidationError as e:
+            return commonLib.statusJson(status=402,message=str(e))        
+        oneData.save()
+        
+        
+        if notice:#如果通知
+        #通知调整给司机
+            if oldPlateNum:
+                driver=Driver()
+                driver.post_message_by_plateNum(oldPlateNum, u"您的订单已调整，请按照如下计划执行：")
+                driver.post_catNum(oldPlateNum,createTime)
+            if newPlateNum:
+                driver=Driver()
+                driver.post_message_by_plateNum(newPlateNum, u"您的订单已调整，请按照如下计划执行：")
+                driver.post_catNum(newPlateNum,createTime)       
+        else:#如果不通知则返回车牌号
+            return [oldPlateNum,newPlateNum,createTime]
+        return commonLib.statusJson()
+    
+#批量修改
+def orderBatchUpdate(request):
+    if request.method == "POST":
+        result = request.POST.get("data")
+        result = json.loads(result)
+        if result:
+            noticePlateNum = set()
+            for i in result:
+                request.POST = i
+                oldPlateNum,newPlateNum,createTime = orderUpdate(request,notice=False)
+                if oldPlateNum:
+                    noticePlateNum.add(oldPlateNum)
+                if newPlateNum:
+                    noticePlateNum.add(newPlateNum)      
+            #通知到司机
+            for plateNum in noticePlateNum:
+                driver=Driver()
+                driver.post_message_by_plateNum(plateNum, u"您的订单已调整，请按照如下计划执行：")
+                driver.post_catNum(plateNum,createTime)                    
+            
+    return commonLib.statusJson(status=200) 
+                
+                
+#删除订单
+def orderDelete(request):
+    if request.method == "POST":
+        #验证字段
+        validateResult = commonLib.validateField(request,"id")
+        if not validateResult[0]:
+            return commonLib.statusJson(status=401,message=validateResult[1]) 
+        if not request.POST.get("id").isdigit():#如果id不是数字
+            return 
+        #查找数据
+        id = int(request.POST.get("id"))
+        try:
+            oneData = OrderForm.objects.get(id=id)
+        except Exception,e:
+            return commonLib.statusJson(status=400, message="删除的数据不存在")
+        plateNum = oneData.plateNum
+        
+        #删除时记录
+        content = "删除了%s状态为%s,车牌号为%s,第%s车%s趟%s任务的订单"%(oneData.createTime,oneData.stateType,oneData.plateNum,oneData.catNum,oneData.tranNum,oneData.placeNum)
+        name = request.user.last_name if request.user.last_name else request.user.username
+        history = History.objects.create(content=content,operator=name,action="删除订单")
+        #得到时间
+        createTime = oneData.createTime
+        #删除数据
+        oneData.delete()
+        #判断该订单是否已经指派，如果指派则通知司机
+        if plateNum:
+            driver=Driver()
+            driver.post_message_by_plateNum(plateNum, u"您的订单已调整，请按照如下计划执行：")
+            driver.post_catNum(plateNum,createTime)         
+        
+        
+        
+        return commonLib.statusJson()
+
+#批量导入
+def batchCreate(request):
+    if request.method == "POST":
+        form = forms.BatchHistoryForm(request.POST,request.FILES)
+        if form.is_valid():
+            uploadFile = form.cleaned_data["uploadFile"]
+            createTime = request.POST.get("createTime",time.strftime("%Y-%m-%d"))#上传哪一天的数据
+            data = BatchHistory()
+            data.uploadFile = uploadFile
+            filename = unicode(data.uploadFile)
+            # if re.match(u'.+[\u4e00-\u9fa5]+',filename):#如果匹配到中文文件名
+            #     return render(request,"jiahuaApp/batchInsertResult.html",{"status":400,"message":u"文件名不能含有中文","domain":DOMAIN})
+            #判断是否重名
+            result = BatchHistory.objects.filter(uploadFile__contains = filename).exists()
+            if result:
+                return render(request,"jiahuaApp/batchInsertResult.html",{"status":400,"message":u"文件名重复,可能会导致内容重复","domain":DOMAIN})
+            data.save()
+            #判断扩展名
+            extName = unicode(data.uploadFile).split(".")[-1]
+            if extName != u"xlsx" and extName != u"xls":
+                #return commonLib.statusJson(status=400,message=u"该文件不是表格文件")
+                return render(request,"jiahuaApp/batchInsertResult.html",{"status":400,"message":u"该文件不是表格文件","domain":DOMAIN})
+            
+    
+            fileParse = commonLib.ParseFile(unicode(data.uploadFile),createTime)#实例化解析对象
+            
+            checkResult = fileParse.check()
+            if not checkResult[0]:#如果检查没通过
+                data.insertResult = u"失败"
+                data.insertNum = 0
+                data.insertFileName = data.uploadFile
+                data.save()
+                #return commonLib.statusJson(status=400,message=checkResult[1])    
+                return render(request,"jiahuaApp/batchInsertResult.html",{"status":400,"message":checkResult[1],"domain":DOMAIN})
+                
+            parseResult = fileParse.parse()
+            if not parseResult[0]:#如果解析没通过
+                data.insertResult = u"失败"
+                data.insertNum = 0
+                data.insertFileName = data.uploadFile
+                data.save()
+                #return commonLib.statusJson(status=400,message=parseResult[1])      
+                return render(request,"jiahuaApp/batchInsertResult.html",{"status":400,"message":parseResult[1],"domain":DOMAIN})
+            
+            #如果解析成功
+            if request.POST.get("full"):#如果需要覆盖
+                OrderForm.objects.filter(createTime=createTime).delete()
+            fileParse.save()#保存到数据库
+            data.insertFileName = data.uploadFile
+            data.insertResult = u"成功"
+            data.insertNum = fileParse.count
+            
+
+            data.save()#保存到数据库
+            #return commonLib.statusJson()
+            
+            
+            return render(request,"jiahuaApp/batchInsertResult.html",{"status":200,"message":u"导入成功","domain":DOMAIN})
+        return render(request,"jiahuaApp/batchInsertResult.html",{"status":400,"message":u"数据验证失败","domain":DOMAIN})
+    return render(request,"jiahuaApp/batchInsertResult.html",{"status":400,"message":u"数据验证失败","domain":DOMAIN})
+
+
+#data=BatchHistory.objects.get(id=1)
+#url = unicode(data.uploadFile)
+#fileParse = commonLib.ParseFile(url)
+#result =fileParse.parse()
+#print result[0]
+#print result[1]
+                
+'''
+#自定义存储路径
+rollfileName="uploadfile/files/"
+rollfilePath=os.path.join(BASE_DIR,rollfileName)   
+# 获取文件二进制流
+requestFile = request.FILES['file']
+# 获取文件名后缀
+fileType = requestFile.name.split(".")[-1]
+# 生成随机字符串加后缀的文件
+fileName = commonLib.random_str() + '.' + fileType
+# 打开文件存储路径
+of = open(rollfilePath+fileName, 'wb+')
+# 向指定路径写入文件
+for chunk in requestFile.chunks():
+    of.write(chunk)#写入内容
+of.close()#关闭连接
+'''
+
+#查询导入的源文件
+def batchQuery(request):
+    batchQuerySet = BatchHistory.objects.all().order_by("-insertTime").values("insertTime","insertFileName","insertResult","insertNum")
+    batchList = list(batchQuerySet)
+    return commonLib.statusJson(body=batchList)
+
+#查询订单
+def orderQuery(request):
+    if request.method == "POST":
+        #创建时间
+        createTime = request.POST["createTime"] if request.POST.get("createTime",None) else request.POST.getlist("createTime[]",None)
+        if not createTime:
+            createTime = time.strftime("%Y-%m-%d")
+        
+        if isinstance(createTime,list):
+            orderQuerySet = OrderForm.objects.filter(createTime__range = (createTime[0],createTime[1]))
+        elif re.match(r'\d{4}-\d{1,2}-\d{1,2}',createTime):
+            orderQuerySet = OrderForm.objects.filter(createTime = createTime)
+        else:
+            return commonLib.statusJson(status=400,message=u"createTime字段格式有误,正确格式[yyyy-mm-dd]")
+        #订单状态
+        stateType = request.POST.get("stateType",None)
+        if stateType:
+            orderQuerySet = orderQuerySet.filter(stateType = stateType)
+        #是否查询单个司机
+        name = request.POST.get("name",None)
+        if name:
+            if stateType and int(stateType) == 1:
+                plateNum = Driver().get_plateNum_by_name(name)
+                orderQuerySet = orderQuerySet.filter(plateNum = plateNum)
+            else:
+                orderQuerySet = orderQuerySet.filter(receiveFormPerson = name)
+        #异常订单查询
+        problem = request.POST.get("problem")
+        if problem == "1" or problem ==1:
+            orderQuerySet = orderQuerySet.filter(problem = 1)
+        #排序
+        orderQuerySet = orderQuerySet.order_by("-createTime", "catNum", "tranNum", "placeNum")
+        orderList = list(orderQuerySet.values())
+        return commonLib.statusJson(body=orderList)
+
+#查询订单统计
+def orderCount(request):
+    if request.method == "POST":
+        #创建时间
+        createTimeList = request.POST.getlist("createTime[]")
+        createTime = request.POST["createTime"] if request.POST.get("createTime",None) else time.strftime("%Y-%m-%d")
+        #司机姓名
+        name = request.POST.get("name")
+      
+        
+        if createTimeList:
+            orderQuerySet = OrderForm.objects.filter(createTime__range = (createTimeList[0],createTimeList[1]))        
+        elif re.match(r'\d{4}-\d{1,2}-\d{1,2}',createTime):
+            orderQuerySet = OrderForm.objects.filter(createTime = createTime)
+        else:
+            return commonLib.statusJson(status=400,message=u"createTime字段格式有误,正确格式[yyyy-mm-dd]")
+        
+        #如果有司机姓名
+        if name:
+            #车牌号
+            plateNum = Driver().get_plateNum_by_name(name)               
+            orderQuerySetDriverGroup = orderQuerySet.filter(plateNum=plateNum).values("stateType").annotate(number=Count('id'))#车牌号分组过滤出已指派为接单的
+            
+            orderQuerySet = orderQuerySet.filter(receiveFormPerson=name)
+             
+            
+        
+        #订单状态的分组
+        stateTypeGroup=orderQuerySet.values("stateType").annotate(number=Count('id'))
+        stateTypeGroup = list(stateTypeGroup)
+        #如果有司机名字，则添加已指派的对应车牌号的数据
+        if name:
+            for i in orderQuerySetDriverGroup:
+                if i.get("stateType") == 1:
+                    stateTypeGroup.append({"stateType":1,"number":i.get("number")})
+        if createTimeList and createTimeList[0] != createTimeList[1]:
+            #按天统计分组
+            orderCountGroup = orderQuerySet.values_list("createTime").annotate(number=Count('id')).order_by("createTime")
+            orderCountGroupList = list(orderCountGroup)
+        else:
+            #按小时统计完成的订单
+            orderCountGroupList = {}
+            for i in orderQuerySet.order_by("acceptTime"):
+                if not i.acceptTime:
+                    continue
+                hour = i.acceptTime.hour
+                if orderCountGroupList.get(hour):
+                    orderCountGroupList[hour] +=1
+                else:
+                    orderCountGroupList[hour] = 1
+            #字典转列表
+            orderCountGroupList = orderCountGroupList.items()
+
+        return commonLib.statusJson(body=[stateTypeGroup,orderCountGroupList])    
+
+#删除指定日期的订单
+def deleteOrder(request):
+    if request.method == "POST":
+        createTimeList = request.POST.getlist("createTime[]")
+        if createTimeList:
+            orderQuerySet = OrderForm.objects.filter(createTime__range = (createTimeList[0],createTimeList[1]))
+            orderQuerySet.delete()
+            return commonLib.statusJson(status=200,message=u"成功删除！")
+        else:
+            return commonLib.statusJson(status=400,message=u"createTime字段格式有误,正确格式[yyyy-mm-dd]")
+
+#--------------------------------------车辆管理-----------------------------------------------------------------------
+#部门列表
+def departmentList(request):
+    if request.method == "POST":
+        driver = Driver()
+        data = driver.department_list()
+
+        return commonLib.statusJson(body=data)
+
+#创建车辆
+def createCat(request):
+    if request.method == "POST":
+        params = {}
+        params['userid'] = request.POST.get('userid', "")
+        params['name'] = request.POST.get('name', "")
+        params['mobile'] = request.POST.get('mobile', "")
+        params['extattr'] = {}
+        params['extattr']['attrs'] = []
+        attrs = {}
+        attrs['name'] = u'\u8f66\u724c'
+        attrs['value'] = request.POST.get('cat')
+        params['extattr']['attrs'].append(attrs)
+        params['department'] = [3] #司机组
+        driver = Driver()
+        data = driver.add_driver(params)
+
+        return commonLib.statusJson(body=data)
+
+#修改车辆信息
+def updateCat(request):
+    if request.method == "POST":
+        params = {}
+        params['userid'] = request.POST.get('userid',"")
+        params['name'] = request.POST.get('name', "")
+        params['mobile'] = request.POST.get('mobile', "")
+        params['extattr'] = {}
+        params['extattr']['attrs'] = []
+        attrs = {}
+        attrs['name'] = '车牌'
+        attrs['value']  = request.POST.get('cat')
+
+        params['extattr']['attrs'].append(attrs)
+        driver = Driver()
+        data = driver.edit_driver(params)
+
+        return commonLib.statusJson(body=data)
+
+#删除车辆
+def deleteCat(request):
+    if request.method == "GET":
+        params = {}
+        params['userid'] = request.GET.get('userid', "")
+        driver = Driver()
+        data = driver.del_driver(params)
+        return commonLib.statusJson(body=data)
+
+#------------------------------------------客户管理--------------------------------------------------------------------------
+
+#发货方和收货方查询
+def queryClient(request):
+    #发货方
+    VLQS1 = SendClient.objects.order_by("id").values_list()
+    sendList1 = list(VLQS1)
+    #收货方
+    VLQS2 = ReceiveClient.objects.order_by("id").values_list()
+    sendList2 = list(VLQS2)
+    return commonLib.statusJson(body=[sendList1,sendList2])
+
+#创建客户
+def createClient(request):
+    if request.method == "POST":
+        validateResult = commonLib.validateField(request,"name")
+        if not validateResult[0]:
+            return commonLib.statusJson(status=401,message=validateResult[1])
+        if request.POST.get("sendCode",None):
+            client = SendClient.create(request.POST)
+            client.save()
+        elif  request.POST.get("receiveCode",None):
+            client = ReceiveClient.create(request.POST)
+            client.save()
+        return commonLib.statusJson()
+
+#修改客户
+def updateClient(request):
+    if request.method == "POST":
+        validateResult = commonLib.validateField(request,"typeId","id")
+        if not validateResult[0]:
+            return commonLib.statusJson(status=401,message=validateResult[1])
+        typeId = int(request.POST.get("typeId"))
+        id = int(request.POST.get("id"))
+        if typeId == 0:
+            oneModel = SendClient.objects.get(id=id)
+            oneModel.update(request.POST)
+            oneModel.save()
+        elif typeId == 1:
+            oneModel = ReceiveClient.objects.get(id=id)
+            oneModel.update(request.POST)
+            oneModel.save()
+        return commonLib.statusJson()
+
+#删除客户
+def deleteClient(request):
+    if request.method == "POST":
+        validateResult = commonLib.validateField(request,"typeId","id")
+        if not validateResult[0]:
+            return commonLib.statusJson(status=401,message=validateResult[1])
+        id = int(request.POST.get("id"))
+        typeId = int(request.POST.get("typeId"))
+        if typeId == 0:
+            oneModel = SendClient.objects.get(id=id)
+            oneModel.delete()
+        elif typeId == 1:
+            oneModel = ReceiveClient.objects.get(id=id)
+            oneModel.delete()
+        return commonLib.statusJson()
+
+
+
+#订单指派,发过来的格式{"userList":[1,2],"orderList":[id1,id2,id3,id4],"plateNum":"31785"}
+def postCat(request):
+    if request.method == "POST":
+        validateResult = commonLib.validateField(request,"orderList[]","plateNum")
+        if not validateResult[0]:
+            return commonLib.statusJson(status=401,message=validateResult[1])    
+        orderList = request.POST.getlist("orderList[]")
+        plateNum = request.POST.get("plateNum")
+        if not isinstance(orderList,list)  :
+            return commonLib.statusJson(status=402,message=u"orderList not list")
+        else:
+            for index in range(len(orderList)):
+                orderList[index] = int(orderList[index])
+        driver = Driver()
+        driver.post_message_by_plateNum(plateNum, u"%s,您的订单已发布,请按如下计划执行:"%plateNum)
+        driver.post_order(orderList, plateNum,request.user.last_name)#发送一车指派消息
+    return commonLib.statusJson()
+
+#批量指派
+def batchPostCat(request):
+    if request.method == "POST":
+        validateResult = commonLib.validateField(request,"data")
+        if not validateResult[0]:
+            return commonLib.statusJson(status=401,message=validateResult[1])     
+        data = request.POST.get("data")
+        data = json.loads(data)
+        for item in data:
+            
+            orderList = item[0]["orderList"]
+            plateNum = item[1]["plateNum"]
+
+            driver = Driver()
+            driver.post_message_by_plateNum(plateNum, u"%s,您今天订单已发布,请按如下计划执行:"%plateNum)
+            driver.post_order(orderList, plateNum,request.user.last_name)#发送一车指派消息
+        return commonLib.statusJson()        
+    
+#得到车牌号信息
+def getCat(request):
+    if request.method == "POST":
+        createTime = request.POST.get("createTime") if request.POST.get("createTime") else request.POST.getlist("createTime[]")
+        if not createTime:
+            createTime =  time.strftime("%Y-%m-%d")
+        driver = Driver()
+        data = driver.get_cat(createTime)
+    return commonLib.statusJson(body=data)
+
+#得到司机信息
+def getDriver(request):
+    if request.method == "POST":
+        driver = Driver()
+        data = driver.get_driver()
+    return commonLib.statusJson(body=data)
+
+#操作历史
+def operateHistory(request):
+    querySet = History.objects.all().order_by("-operateTime").values()[:100]
+    queryList = list(querySet)
+    return commonLib.statusJson(body=queryList)    
+
+#取货卸货超时
+def activeTimeout(request):
+    #创建时间
+    createTimeList = request.POST.getlist("createTime[]")
+    createTime = request.POST["createTime"] if request.POST.get("createTime",None) else time.strftime("%Y-%m-%d")
+
+    if createTimeList:
+        orderQuerySet = OrderForm.objects.filter(createTime__range = (createTimeList[0],createTimeList[1]))        
+    elif re.match(r'\d{4}-\d{1,2}-\d{1,2}',createTime):
+        orderQuerySet = OrderForm.objects.filter(createTime = createTime)
+    else:
+        return commonLib.statusJson(status=400,message=u"createTime字段格式有误,正确格式[yyyy-mm-dd]")  
+    #收集取货时间
+    getTimeQuerySet = orderQuerySet.filter(getTime__isnull = False).order_by("-createTime","-getStartTime").values()
+    #收集收货时长
+    sendTimeQuerySet  = orderQuerySet.filter(sendTime__isnull = False).order_by("-createTime","-sendStartTime").values()
+    return commonLib.statusJson(body=[list(getTimeQuerySet),list(sendTimeQuerySet)])
+    
+#删除取货卸货超时
+def deleteActiveTimeout(request):
+    try:
+        Id = request.POST.get("id")
+        Type = request.POST.get("type")
+        Type = int(Type)
+        if Id:
+            order = OrderForm.objects.get(id=Id)
+            if Type == 0:
+                order.getTime = None
+            if Type == 1:
+                order.sendTime = None
+            order.save()
+            return commonLib.statusJson()
+    except Exception,e:
+        return commonLib.statusJson(status=400, message=str(e))
+    
+#微信中订单状态的修改
+def orderState(request):
+    try:
+        orderList = request.POST.getlist("orderList[]")
+        orderList = [int(x) for x in orderList]#列表推导式
+        name = request.POST.get("name")
+        problem = request.POST.get("problem")#是否在历史订单中点击
+        orderQuerySet = OrderForm.objects.filter(id__in=orderList).order_by("stateType")
+        
+        
+        minStateType = None#最小状态值
+        for order in orderQuerySet:
+            if not minStateType:
+                minStateType = order.stateType
+            else:
+                if order.stateType != minStateType:#如果不等于跳过
+                    continue
+                
+            plateNum = Driver().get_plateNum_by_name(name)#检查名字对应的车牌号
+            if order.plateNum != plateNum:
+                order.problem = 1
+                order.other += ";请注意%s不是该车司机却在更新该订单"%name             
+            
+            if order.stateType == 1:#接单
+                order.receiveFormPerson = name
+                order.receiveFormTime = datetime.datetime.now()
+                if problem:
+                    order.problem = 1
+                    order.other += ";在历史订单中完成的接单"                
+            elif order.stateType == 2:#装货
+                order.receiveGoodsPerson = name
+                order.receiveGoodsTime = datetime.datetime.now()
+                if (order.receiveGoodsTime-order.receiveFormTime).seconds < 1800:
+                    order.problem = 1
+                    order.other += ";装货过快"                
+                if order.receiveFormPerson != name:#如果接单人不等于装货人
+                    order.problem = 1
+                    order.other += ";接单和装货不是同一人"
+                if problem:
+                    order.problem = 1
+                    order.other += ";在历史订单中完成的装货"             
+            elif order.stateType == 3:#签收
+                order.acceptPerson = name
+                order.acceptTime = datetime.datetime.now()
+                if order.receiveFormPerson != name:#如果接单人不等于签收人
+                    order.problem = 1
+                    order.other += ";接单和签收不是同一人"    
+                if order.receiveGoodsPerson != name:#如果装货人不等于签收人
+                    order.problem = 1
+                    order.other += ";装货和签收不是同一人"  
+                if (order.acceptTime-order.receiveGoodsTime).seconds < 1800:
+                    order.problem = 1
+                    order.other += ";签收过快"    
+                if problem:
+                    order.problem = 1
+                    order.other += ";在历史订单中完成的签收"
+            else:
+                return commonLib.statusJson(status=400, message="状态值有误")
+            order.stateType += 1
+            order.save()
+        return commonLib.statusJson()
+    except Exception,e:
+        return commonLib.statusJson(status=400, message="错误信息:%s"%str(e))
+
+
+#微信超时上报
+def waitTimeout(request):
+    try:
+        data = request.POST.getlist("data[]")
+        orderId = data[0]#订单id
+        startTime = data[1]#开始时间
+        endTime = data[2]#结束时间
+        lastTime =data[3]#最后计算时间
+        uploadType = int(data[4])#上报类型
+        
+        order = OrderForm.objects.get(id=orderId)
+        if uploadType == 0:#发货方上报
+            order.getStartTime = startTime
+            order.getEndTime = endTime
+            order.getTime = lastTime
+            order.problem = 1
+            order.other += ";取货超时%s分钟"%lastTime
+        else:#收货时间上报
+            order.sendStartTime = startTime
+            order.sendEndTime = endTime
+            order.sendTime = lastTime
+            order.problem = 1
+            order.other += ";卸货超时%s分钟"%lastTime
+        order.save()
+        return commonLib.statusJson()
+    except Exception,e:
+        return commonLib.statusJson(status=400, message="错误信息:%s"%str(e))
+
+            
+
+#获取位置
+def location(request):
+    name = request.POST.get("name")
+    localTime = datetime.datetime.now() - datetime.timedelta(hours=48)
+    if name:
+        query = Location.objects.filter(name = name,insertTime__gt=localTime).order_by("insertTime").values_list("longitude","latitude","insertTime","name")
+    else:
+        query = Location.objects.filter(insertTime__gt=localTime).order_by("name","insertTime").values_list("longitude","latitude","insertTime","name")
+    query = list(query)
+    return commonLib.statusJson(body=query)
+    
