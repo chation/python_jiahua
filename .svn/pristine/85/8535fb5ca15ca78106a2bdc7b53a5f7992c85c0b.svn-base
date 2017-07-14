@@ -1,0 +1,70 @@
+<div class="upload">
+    <div class="file-hd">
+        <!--<span class="btn-file" id="btn-file">导入文件</span>-->
+        <div class="file-choose">
+            <form action="/json/order/batch/insert/" method="POST" enctype="multipart/form-data" id="formFile" style="display: inline-block;">
+                <span class="file-tl">导入文件</span>
+                {% csrf_token %}
+                {{form.as_p}}
+                <input id="uploadTime" name="createTime">
+                <input type="checkbox" name="full" id="cover">是否覆盖
+                <input type="submit" value="提交" id="submitFile">
+            </form>
+            <form action="" class="form-inline" style="display: inline-block;">
+                <div class="form-group">
+                    <label for="ustartTime">日期</label>
+                    <input type="text" id="ustartTime">
+                </div>
+                <div class="form-group">
+                    <label for="uendTime">至</label>
+                    <input type="text" id="uendTime">
+                </div>
+                <a href="" id="uploadDel" style="display: inline-block;width: 100px;height:26px;line-height: 26px;text-align: center;background: #2f90ea;color:#fff;border-radius:3px;">删除数据</a>
+            </form>
+        </div>
+    </div>
+    <div class="tab_box">
+        <table class="table table-bordered orderTab">
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>导入日期</th>
+                <th>导入文件名</th>
+                <th>导入结果</th>
+                <th>导入时间</th>
+                <th>导入订单总数</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="/static/js/jquery-form.js"></script>
+<script src="/static/js/uploadFile.js"></script>
+<script>
+    //日期选择
+    $('#uploadTime').dcalendarpicker();
+    $('#calendar-uploadTime').dcalendar();
+    $('#ustartTime').dcalendarpicker();
+    $('#calendar-ustartTime').dcalendar();
+    $('#uendTime').dcalendarpicker();
+    $('#calendar-uendTime').dcalendar();
+    //清除数据
+    $("#uploadDel").click(function (e) {
+        e.preventDefault();
+        var ustartTime=$("#ustartTime").val();
+        var uendTime=$("#uendTime").val();
+        $.ajax({
+            type:"post",
+            url:"/json/order/delbydate",
+            data:{createTime:[ustartTime,uendTime]},
+            success:function(){
+                $("#promptBox").text("删除成功");
+                warningClass();
+                promptBox();
+                uploadFile();
+            }
+        });
+    })
+</script>

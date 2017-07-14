@@ -185,9 +185,9 @@ def batchCreate(request):
             # if re.match(u'.+[\u4e00-\u9fa5]+',filename):#如果匹配到中文文件名
             #     return render(request,"jiahuaApp/batchInsertResult.html",{"status":400,"message":u"文件名不能含有中文","domain":DOMAIN})
             #判断是否重名
-            result = BatchHistory.objects.filter(uploadFile__contains = filename).exists()
-            if result:
-                return render(request,"jiahuaApp/batchInsertResult.html",{"status":400,"message":u"文件名重复,可能会导致内容重复","domain":DOMAIN})
+            # result = BatchHistory.objects.filter(uploadFile__contains = filename).exists()
+            # if result:
+            #     return render(request,"jiahuaApp/batchInsertResult.html",{"status":400,"message":u"文件名重复,可能会导致内容重复","domain":DOMAIN})
             data.save()
             #判断扩展名
             extName = unicode(data.uploadFile).split(".")[-1]
@@ -223,7 +223,11 @@ def batchCreate(request):
             data.insertFileName = data.uploadFile
             data.insertResult = u"成功"
             data.insertNum = fileParse.count
-            
+
+            #数据导入后删掉文件
+            filePath = os.path.dirname(os.path.dirname(__file__))+'/media/'+str(data.insertFileName)
+            if os.path.exists(filePath):
+                os.remove(filePath)
 
             data.save()#保存到数据库
             #return commonLib.statusJson()

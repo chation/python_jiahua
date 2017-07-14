@@ -1,0 +1,74 @@
+<div class="upload">
+    <div class="file-hd">
+        <!--<span class="btn-file" id="btn-file">导入文件</span>-->
+        <div class="file-choose">
+            <form action="/json/order/batch/insert/" method="POST" enctype="multipart/form-data" id="formFile" style="display: inline-block;">
+                <span class="file-tl">导入文件</span>
+                {% csrf_token %}
+                {{form.as_p}}
+                <input id="uploadTime" name="createTime">
+                <input type="checkbox" name="full" id="cover">是否覆盖
+                <input type="submit" value="提交" id="submitFile">
+            </form>
+            <form action="" class="form-inline" style="display: inline-block;margin-left: 20px;">
+                <div class="form-group">
+                    <input type="text" id="ustartTime" placeholder="起始日期">
+                </div>
+                <div class="form-group">
+                    <input type="text" id="uendTime" placeholder="结束日期">
+                </div>
+                <a href="" id="uploadDel" data-toggle="modal" data-target="#deleteUpload" style="display: inline-block;width: 100px;height:26px;line-height: 26px;text-align: center;background: #2f90ea;color:#fff;border-radius:3px;">删除订单</a>
+            </form>
+        </div>
+    </div>
+    <div class="tab_box">
+        <table class="table table-bordered orderTab">
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>导入日期</th>
+                <th>导入文件名</th>
+                <th>导入结果</th>
+                <th>导入时间</th>
+                <th>导入订单总数</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="/static/js/jquery-form.js"></script>
+<script src="/static/js/uploadFile.js"></script>
+<script>
+    //日期选择
+    $('#uploadTime').dcalendarpicker();
+    $('#calendar-uploadTime').dcalendar();
+    $('#ustartTime').dcalendarpicker();
+    $('#calendar-ustartTime').dcalendar();
+    $('#uendTime').dcalendarpicker();
+    $('#calendar-uendTime').dcalendar();
+    //清除数据
+    $("#uploadDel").click(function (e) {
+        e.preventDefault();
+        var ustartTime=$("#ustartTime").val();
+        var uendTime=$("#uendTime").val();
+        $("div.modal").attr("id", "deleteUpload");
+        $("div.modal h4").text("删除订单");
+        $("div.modal .add").replaceWith("<div class='add'><p>是否删除此订单？</p></div>");
+        $(".confirm").click(function () {
+            $.ajax({
+                type: "post",
+                url: "/json/order/delbydate/",
+                data: {createTime: [ustartTime, uendTime]},
+                success: function () {
+                    $("#promptBox").text("删除成功");
+                    warningClass();
+                    promptBox();
+                    uploadFile();
+                    modal();
+                }
+            });
+        })
+    })
+</script>
