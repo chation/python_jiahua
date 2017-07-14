@@ -1,6 +1,0 @@
-django==1.10.4
-MySQL-python
-wechat-sdk
-demjson
-xlrd
-xmltodict
