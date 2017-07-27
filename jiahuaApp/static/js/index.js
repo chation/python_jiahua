@@ -86,6 +86,7 @@ $(function () {
     });
     //点击用户管理
     $("#user").click(function () {
+         $("div.modal h4").text("用户管理");
         $("#uManage .modal-dialog").css("width","800px");
         $.ajax({
             type:"post",
