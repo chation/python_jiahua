@@ -1,4 +1,4 @@
-django==1.10.4
+django>=1.11.18
 MySQL-python
 wechat-sdk
 demjson
